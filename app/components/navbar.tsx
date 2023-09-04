@@ -1,7 +1,19 @@
 import React from "react";
 
 const Navbar = () => {
-  return <div>Navbar</div>;
+  return (
+    <div className='flex justify-between items-center my-5 mx-10 border-b border-gray-200 pb-4'>
+      <div className='flex items-center space-x-12'>
+        <h1>Logo</h1>
+        <button>Dashboard</button>
+        <button>Groups</button>
+        <button>Settings</button>
+      </div>
+      <div>
+        <button>Sign Out</button>
+      </div>
+    </div>
+  );
 };
 
 export default Navbar;
