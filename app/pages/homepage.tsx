@@ -1,9 +1,10 @@
 import React from "react";
+import GroupCard from "../components/groupCard";
 
 const Home = () => {
   return (
     <div>
-      <div className='flex justify-evenly items-center mx-10 mb-10 mt-10'>
+      <div className='flex justify-evenly items-center mx-10 mb-5 mt-10'>
         {/* image here? */}
         <div>Groups you host:</div>
         <div>Groups you are in:</div>
@@ -11,16 +12,18 @@ const Home = () => {
       <div className='flex justify-evenly items-center mx-10 mb-10'>
         {/* cards here */}
         <div>
-          <div>Host Groups Here</div>
-          <div>Host Groups Here</div>
-          <div>Host Groups Here</div>
-          <div>Host Groups Here</div>
+          <GroupCard />
+          <GroupCard />
+          <GroupCard />
+          <GroupCard />
+          <GroupCard />
         </div>
         <div>
-          <div>Member Groups Here</div>
-          <div>Member Groups Here</div>
-          <div>Member Groups Here</div>
-          <div>Member Groups Here</div>
+          <GroupCard />
+          <GroupCard />
+          <GroupCard />
+          <GroupCard />
+          <GroupCard />
         </div>
       </div>
     </div>
