@@ -8,10 +8,10 @@ const Navbar = () => {
     <div className='flex justify-between items-center my-5 mx-10 border-b border-gray-200 pb-4'>
       <div className='flex items-center space-x-12'>
         <h1>Logo</h1>
-        <button onClick={() => console.log("Dashboard clicked")}>
+        <button onClick={() => (window.location.href = "/dashboard")}>
           Dashboard
         </button>
-        <button onClick={() => (window.location.href = "/pages/groups")}>
+        <button onClick={() => (window.location.href = "/groups")}>
           Groups
         </button>
         <button onClick={() => console.log("Settings Clicked")}>
