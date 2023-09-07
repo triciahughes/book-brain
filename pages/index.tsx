@@ -1,7 +1,35 @@
 import Dashboard from "./dashboard/index";
 import Head from "next/head";
+import { getSession } from "next-auth/react";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+
+export const getServerSideProps = async (context) => {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/signin",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {}, // you can pass the session here if needed
+  };
+};
 
 export default function Home() {
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!session) {
+      router.push("/signin");
+    }
+  }, [session, router]);
   return (
     <>
       <Head>

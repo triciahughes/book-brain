@@ -25,14 +25,14 @@ export const getStaticProps = async () => {
 
 const Groups = ({ allGroups }) => {
   console.log(allGroups);
-  const { data: session } = useSession();
-  const router = useRouter();
+  // const { data: session } = useSession();
+  // const router = useRouter();
 
-  useEffect(() => {
-    if (!session) {
-      router.push("/signin");
-    }
-  }, [session, router]);
+  // useEffect(() => {
+  //   if (!session) {
+  //     router.push("/signin");
+  //   }
+  // }, [session, router]);
 
   const groupData = allGroups.map((group) => {
     return <GroupCard groupName={group.name} key={group.id} />;

@@ -8,29 +8,27 @@ const prisma = new PrismaClient();
 export default NextAuth({
   providers: [
     CredentialsProvider({
-      name: "Credentials",
-      credentials: {
-        email: {
-          label: "Email",
-          type: "text",
-          placeholder: "jsmith@email.com",
-        },
-        password: { label: "Password", type: "password" },
-      },
+      // ... other config
       async authorize(credentials) {
         try {
-          const user = await prisma.user.findUnique({
-            where: { email: credentials.email },
+          // Query for the user by email and plain-text password
+          const user = await prisma.user.findFirst({
+            where: {
+              email: credentials.email,
+              passwordHash: credentials.password, // assuming 'passwordHash' is the field name in your Prisma model
+            },
           });
 
-          if (
-            user &&
-            (await bcrypt.compare(credentials.password, user.password))
-          ) {
-            // Return user object if credentials are valid
-            return { email: user.email, id: user.id, name: user.name }; // adjust the properties accordingly
+          if (user) {
+            // Return user object if found
+            return {
+              email: user.email,
+              id: user.id,
+              firstName: user.firstName,
+              lastName: user.lastName,
+            };
           } else {
-            return null; // Return null if credentials are invalid
+            return null; // Return null if no user is found with those credentials
           }
         } catch (error) {
           console.error("Error during authentication:", error);
@@ -41,4 +39,12 @@ export default NextAuth({
       },
     }),
   ],
+  session: {
+    jwt: true, // using JSON web tokens
+    maxAge: 24 * 60 * 60, // 1 day
+  },
+  pages: {
+    signIn: "/signin", // Use custom sign-in page
+    // ... potentially other pages
+  },
 });
