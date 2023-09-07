@@ -1,7 +1,9 @@
 import React from "react";
 import GroupCard from "../../components/groupCard";
 import prisma from "../../app/lib/prisma";
-import { group } from "console";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 export const getStaticProps = async () => {
   try {
@@ -23,6 +25,14 @@ export const getStaticProps = async () => {
 
 const Groups = ({ allGroups }) => {
   console.log(allGroups);
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!session) {
+      router.push("/signin");
+    }
+  }, [session, router]);
 
   const groupData = allGroups.map((group) => {
     return <GroupCard groupName={group.name} key={group.id} />;
