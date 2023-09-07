@@ -1,15 +1,14 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { PrismaClient } from "@prisma/client";
+// If you plan to hash passwords, import bcrypt or a similar library here.
+
+const prisma = new PrismaClient();
 
 export default NextAuth({
   providers: [
     CredentialsProvider({
-      // The name to display on the sign in form (e.g. 'Sign in with...')
       name: "Credentials",
-      // The credentials is used to generate a suitable form on the sign in page.
-      // You can specify whatever fields you are expecting to be submitted.
-      // e.g. domain, username, password, 2FA token, etc.
-      // You can pass any HTML attribute to the <input> tag through the object.
       credentials: {
         email: {
           label: "Email",
@@ -19,25 +18,26 @@ export default NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        // You need to provide your own logic here that takes the credentials
-        // submitted and returns either a object representing a user or value
-        // that is false/null if the credentials are invalid.
-        // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
-        // You can also use the `req` object to obtain additional parameters
-        // (i.e., the request IP address)
-        const res = await fetch("/your/endpoint", {
-          method: "POST",
-          body: JSON.stringify(credentials),
-          headers: { "Content-Type": "application/json" },
-        });
-        const user = await res.json();
+        let user;
+        try {
+          // Ideally, here you should retrieve the user by email
+          // Then compare hashed passwords using bcrypt or similar
+          user = await prisma.user.findUnique({
+            where: { email: credentials.email },
+          });
 
-        // If no error and we have user data, return it
-        if (res.ok && user) {
-          return user;
+          // Using bcrypt as an example:
+          // const isValidPassword = await bcrypt.compare(credentials.password, user?.password);
+          // if (!isValidPassword) user = null;
+
+          // The above code assumes you've stored the hashed password in the database.
+        } catch (error) {
+          console.error("Error during authentication:", error);
+        } finally {
+          await prisma.$disconnect(); // Disconnect prisma after using
         }
-        // Return null if user data could not be retrieved
-        return null;
+
+        return user || null;
       },
     }),
   ],
