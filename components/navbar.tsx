@@ -14,7 +14,7 @@ const Navbar = () => {
         <button onClick={() => (window.location.href = "/groups")}>
           Groups
         </button>
-        <button onClick={() => console.log("Settings Clicked")}>
+        <button onClick={() => (window.location.href = "/settings")}>
           Settings
         </button>
       </div>
