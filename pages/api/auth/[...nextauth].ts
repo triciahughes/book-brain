@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaClient } from "@prisma/client";
-// If you plan to hash passwords, import bcrypt or a similar library here.
+// import bcrypt or a similar library here.
 
 const prisma = new PrismaClient();
 
@@ -20,13 +20,13 @@ export default NextAuth({
       async authorize(credentials, req) {
         let user;
         try {
-          // Ideally, here you should retrieve the user by email
+          // retrieve the user by email
           // Then compare hashed passwords using bcrypt or similar
           user = await prisma.user.findUnique({
             where: { email: credentials.email },
           });
 
-          // Using bcrypt as an example:
+          // Using bcrypt...
           // const isValidPassword = await bcrypt.compare(credentials.password, user?.password);
           // if (!isValidPassword) user = null;
 
