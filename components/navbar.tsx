@@ -1,9 +1,12 @@
 "use client";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { signOut } from "next-auth/react";
 
 const Navbar = () => {
-  // const navigate = useNavigate();
+  const handleSignOut = () => {
+    signOut();
+    window.location.href = "/signin";
+  };
   return (
     <div className='flex justify-between items-center my-5 mx-10 border-b border-gray-200 pb-4'>
       <div className='flex items-center space-x-12'>
@@ -19,9 +22,7 @@ const Navbar = () => {
         </button>
       </div>
       <div>
-        <button onClick={() => console.log("Sign out clicked")}>
-          Sign Out
-        </button>
+        <button onClick={() => signOut()}>Sign Out</button>
       </div>
     </div>
   );

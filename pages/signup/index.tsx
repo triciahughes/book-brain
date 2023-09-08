@@ -24,6 +24,9 @@ const Signup = () => {
   };
 
   const handleSignIn = () => {
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
     router.push("/signin");
   };
 
@@ -38,7 +41,7 @@ const Signup = () => {
             onChange={(e) => setEmail(e.target.value)}
             placeholder='Email'
             required
-            className='rounded-full hover:bg-gray-400'
+            className='text-black hover:text-white rounded-full hover:bg-gray-400'
           />
           <input
             type='password'
@@ -46,7 +49,7 @@ const Signup = () => {
             onChange={(e) => setPassword(e.target.value)}
             placeholder='Password'
             required
-            className='rounded-full hover:bg-gray-400'
+            className='text-black hover:text-white rounded-full hover:bg-gray-400'
           />
           <input
             type='password'
@@ -54,7 +57,7 @@ const Signup = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
             placeholder='Confirm Password'
             required
-            className='rounded-full hover:bg-gray-400'
+            className='text-black hover:text-white rounded-full hover:bg-gray-400'
           />
           <button
             type='submit'

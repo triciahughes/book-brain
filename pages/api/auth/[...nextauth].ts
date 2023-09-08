@@ -8,29 +8,28 @@ const prisma = new PrismaClient();
 export default NextAuth({
   providers: [
     CredentialsProvider({
-      name: "Credentials",
-      credentials: {
-        email: {
-          label: "Email",
-          type: "text",
-          placeholder: "jsmith@email.com",
-        },
-        password: { label: "Password", type: "password" },
-      },
+      // ... other config
       async authorize(credentials) {
         try {
-          const user = await prisma.user.findUnique({
-            where: { email: credentials.email },
+          // Query for the user by email and plain-text password
+          const user = await prisma.user.findFirst({
+            where: {
+              email: credentials.email,
+              passwordHash: credentials.password, // assuming 'passwordHash' is the field name in your Prisma model
+            },
           });
 
-          if (
-            user &&
-            (await bcrypt.compare(credentials.password, user.password))
-          ) {
-            // Return user object if credentials are valid
-            return { email: user.email, id: user.id, name: user.name }; // adjust the properties accordingly
+          if (user) {
+            // Return user object if found
+            // console.log(user);
+            return {
+              email: user.email,
+              id: user.id,
+              firstName: user.firstName,
+              lastName: user.lastName,
+            };
           } else {
-            return null; // Return null if credentials are invalid
+            return null; // Return null if no user is found with those credentials
           }
         } catch (error) {
           console.error("Error during authentication:", error);
@@ -41,4 +40,26 @@ export default NextAuth({
       },
     }),
   ],
+  callbacks: {
+    session: async ({ session, token }) => {
+      if (session?.user) {
+        session.user.id = token.uid;
+        session.user.firstName = token.firstName;
+        session.user.lastName = token.lastName;
+      }
+      return session;
+    },
+    jwt: async ({ user, token }) => {
+      if (user) {
+        token.uid = user.id;
+        token.firstName = user.firstName;
+        token.lastName = user.lastName;
+      }
+      return token;
+    },
+  },
+  pages: {
+    signIn: "/signin",
+    signOut: "/signin",
+  },
 });
