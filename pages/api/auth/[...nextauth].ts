@@ -15,7 +15,7 @@ export default NextAuth({
           const user = await prisma.user.findFirst({
             where: {
               email: credentials.email,
-              passwordHash: credentials.password, // assuming 'passwordHash' is the field name in your Prisma model
+              passwordHash: credentials.password,
             },
           });
 
