@@ -15,7 +15,7 @@ export default function RootLayout({
       {router.pathname !== "/signin" && router.pathname !== "/signup" && (
         <Navbar />
       )}
-      <main className='flex-grow flex'>{children}</main>
+      <main className='flex-grow'>{children}</main>
       <Footer />
     </div>
   );

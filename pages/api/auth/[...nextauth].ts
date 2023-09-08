@@ -21,7 +21,7 @@ export default NextAuth({
 
           if (user) {
             // Return user object if found
-            console.log(user);
+            // console.log(user);
             return {
               email: user.email,
               id: user.id,
