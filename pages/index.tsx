@@ -1,25 +1,11 @@
 import Dashboard from "./dashboard/index";
 import Head from "next/head";
-import { getSession } from "next-auth/react";
+import { checkUserSession } from "../app/lib/data-fetching/sessionData";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
-export const getServerSideProps = async (context) => {
-  const session = await getSession(context);
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/signin",
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {}, // pass the session here if needed
-  };
-};
+export const getServerSideProps = checkUserSession;
 
 export default function Home() {
   const { data: session } = useSession();
