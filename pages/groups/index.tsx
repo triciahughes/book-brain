@@ -67,7 +67,6 @@ const Groups = ({ userHostGroups, userMemberGroups }) => {
   return (
     <div>
       <div className='flex justify-evenly items-center mx-10 mb-5 mt-10'>
-        {/* image here? */}
         <div>Groups you host:</div>
         <div>Groups you are in:</div>
       </div>
