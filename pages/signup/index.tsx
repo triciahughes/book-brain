@@ -1,8 +1,23 @@
 import React, { useState } from "react";
-import { signIn } from "next-auth/react";
+// import { signUp } from "next-auth/react";
 import { useRouter } from "next/router";
+// import { postUserData } from "../../app/lib/data-fetching/userData";
+
+export const postUserData = async (data) => {
+  const response = await fetch("/api/createUser", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  return response.json();
+};
 
 const Signup = () => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setConfirmPassword] = useState("");
@@ -15,12 +30,24 @@ const Signup = () => {
       alert("Passwords do not match");
       return;
     } else {
-      signIn("credentials", {
+      const userData = {
+        firstName: firstName,
+        lastName: lastName,
         email: email,
-        password: password,
-        callbackUrl: "/dashboard",
-      });
+        passwordHash: password,
+        hostGroups: [],
+        memberships: [],
+        comments: [],
+      };
+
+      try {
+        await postUserData(userData);
+        router.push("/dashboard");
+      } catch (error) {
+        console.error("Error creating user:", error.message);
+      }
     }
+    router.push("/dashboard");
   };
 
   const handleSignIn = () => {
@@ -35,6 +62,22 @@ const Signup = () => {
       <div className='flex flex-col items-center'>
         Please create your account
         <form onSubmit={handleSubmit} className='flex flex-col gap-4 mt-5'>
+          <input
+            type='text'
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            placeholder='First Name'
+            required
+            className='text-black hover:text-white rounded-full hover:bg-gray-400'
+          />
+          <input
+            type='text'
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            placeholder='Last Name'
+            required
+            className='text-black hover:text-white rounded-full hover:bg-gray-400'
+          />
           <input
             type='email'
             value={email}
