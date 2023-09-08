@@ -21,6 +21,7 @@ export default NextAuth({
 
           if (user) {
             // Return user object if found
+            console.log(user);
             return {
               email: user.email,
               id: user.id,
@@ -39,12 +40,26 @@ export default NextAuth({
       },
     }),
   ],
-  session: {
-    jwt: true, // using JSON web tokens
-    maxAge: 24 * 60 * 60, // 1 day
+  callbacks: {
+    session: async ({ session, token }) => {
+      if (session?.user) {
+        session.user.id = token.uid;
+        session.user.firstName = token.firstName;
+        session.user.lastName = token.lastName;
+      }
+      return session;
+    },
+    jwt: async ({ user, token }) => {
+      if (user) {
+        token.uid = user.id;
+        token.firstName = user.firstName;
+        token.lastName = user.lastName;
+      }
+      return token;
+    },
   },
   pages: {
-    signIn: "/signin", // Use custom sign-in page
-    // ... potentially other pages
+    signIn: "/signin",
+    signOut: "/signin",
   },
 });

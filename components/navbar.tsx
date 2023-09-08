@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { signOut } from "next-auth/react";
 
 const Navbar = () => {
   // const navigate = useNavigate();
@@ -19,9 +20,7 @@ const Navbar = () => {
         </button>
       </div>
       <div>
-        <button onClick={() => console.log("Sign out clicked")}>
-          Sign Out
-        </button>
+        <button onClick={() => signOut()}>Sign Out</button>
       </div>
     </div>
   );
