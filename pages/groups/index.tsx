@@ -14,28 +14,43 @@ interface GroupsProps {
 
 export const getServerSideProps = fetchUserGroups;
 
+const renderGroupCards = (groups?: Group[]) => {
+  if (!groups || groups.length === 0) {
+    return (
+      <div className='flex flex-col items-center justify-center'>
+        <div className='text-red-400 italic'>
+          Looks like you don't have any groups.
+        </div>
+        <button className='p-3 mt-4 rounded-lg border border-white text-blue-300 hover:text-purple-700 hover:bg-gray-400'>
+          Add Group
+        </button>
+      </div>
+    );
+  }
+
+  return groups.map(({ id, name }) => <GroupCard groupName={name} key={id} />);
+};
+
 const Groups: React.FC<GroupsProps> = ({
   userHostGroups,
   userMemberGroups,
 }) => {
-  console.log(typeof userHostGroups, typeof userMemberGroups);
-  const groupHostData = userHostGroups?.map((group) => {
-    return <GroupCard groupName={group.name} key={group.id} />;
-  });
-
-  const groupMemberData = userMemberGroups?.map((group) => {
-    return <GroupCard groupName={group.name} key={group.id} />;
-  });
   return (
     <div>
-      <div className='flex justify-evenly items-center mx-10 mb-5 mt-10'>
+      <div className='flex justify-evenly items-center mb-5 mt-10 text-2xl font-bold'>
         <div>Groups you host:</div>
         <div>Groups you are in:</div>
       </div>
-      <div className='flex justify-evenly items-center mx-10 mb-10'>
-        {/* cards here */}
-        <div>{groupHostData}</div>
-        <div>{groupMemberData}</div>
+      <div className='flex justify-evenly items-start mx-10 mb-10'>
+        {" "}
+        <div className='flex flex-col items-center min-h-[300px]'>
+          {" "}
+          {renderGroupCards(userHostGroups)}
+        </div>
+        <div className='flex flex-col items-center min-h-[300px]'>
+          {" "}
+          {renderGroupCards(userMemberGroups)}
+        </div>
       </div>
     </div>
   );
