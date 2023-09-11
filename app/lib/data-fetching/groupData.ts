@@ -1,7 +1,15 @@
 import prisma from "../prisma";
 import { getSession } from "next-auth/react";
+import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 
-export const fetchUserGroups = async (context) => {
+interface GroupsProps {
+  userHostGroups: Array<object>;
+  userMemberGroups: Array<object>;
+}
+
+export const fetchUserGroups = async (
+  context: GetServerSidePropsContext
+): Promise<GetServerSidePropsResult<GroupsProps>> => {
   const session = await getSession(context);
 
   if (!session) {

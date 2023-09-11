@@ -2,9 +2,23 @@ import React from "react";
 import GroupCard from "../../components/groupCard";
 import { fetchUserGroups } from "../../app/lib/data-fetching/groupData";
 
+interface Group {
+  id: number;
+  name: string;
+}
+
+interface GroupsProps {
+  userHostGroups?: Group[];
+  userMemberGroups?: Group[];
+}
+
 export const getServerSideProps = fetchUserGroups;
 
-const Groups = ({ userHostGroups, userMemberGroups }) => {
+const Groups: React.FC<GroupsProps> = ({
+  userHostGroups,
+  userMemberGroups,
+}) => {
+  console.log(typeof userHostGroups, typeof userMemberGroups);
   const groupHostData = userHostGroups?.map((group) => {
     return <GroupCard groupName={group.name} key={group.id} />;
   });
