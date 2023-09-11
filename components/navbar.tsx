@@ -1,11 +1,13 @@
 "use client";
 import React from "react";
 import { signOut } from "next-auth/react";
+import { useRouter } from "next/router";
 
 const Navbar = () => {
+  const router = useRouter();
   const handleSignOut = () => {
+    router.push("/signin");
     signOut();
-    window.location.href = "/signin";
   };
   return (
     <div className='flex justify-between items-center my-5 mx-10 border-b border-gray-200 pb-4'>
@@ -22,7 +24,7 @@ const Navbar = () => {
         </button>
       </div>
       <div>
-        <button onClick={() => signOut()}>Sign Out</button>
+        <button onClick={handleSignOut}>Sign Out</button>
       </div>
     </div>
   );

@@ -5,6 +5,8 @@ export const fetchUserGroups = async (context) => {
   const session = await getSession(context);
 
   if (!session) {
+    console.error("No session found.");
+    console.log("Session:", session);
     return {
       redirect: {
         destination: "/signin",
