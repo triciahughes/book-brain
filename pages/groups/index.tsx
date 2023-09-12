@@ -28,7 +28,9 @@ const renderGroupCards = (groups?: Group[]) => {
     );
   }
 
-  return groups.map(({ id, name }) => <GroupCard groupName={name} key={id} />);
+  return groups.map(({ id, name }) => (
+    <GroupCard groupName={name} key={id} groupId={id} />
+  ));
 };
 
 const Groups: React.FC<GroupsProps> = ({
