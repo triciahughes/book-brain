@@ -121,16 +121,16 @@ export const fetchGroupById = async (
 
     const prompts = await prisma.prompt.findMany({
       where: {
-        id: {
-          in: books.map((book) => book.bookId),
+        bookId: {
+          in: books.map((book) => book.groupId),
         },
       },
     });
 
     const comments = await prisma.comment.findMany({
       where: {
-        id: {
-          in: prompts.map((prompt) => prompt.promptId),
+        promptId: {
+          in: prompts.map((prompt) => prompt.id),
         },
       },
     });

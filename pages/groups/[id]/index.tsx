@@ -6,9 +6,9 @@ export const getServerSideProps = fetchGroupById;
 const GroupById = ({ group, members, books, prompts, comments }) => {
   //   console.log(group);
   //   console.log(members);
-  //   console.log(books);
-  //   console.log(prompts);
-  //   console.log(comments);
+  console.log(books);
+  console.log(prompts);
+  console.log(comments);
   return (
     <div>
       <div>{group.name}</div>
