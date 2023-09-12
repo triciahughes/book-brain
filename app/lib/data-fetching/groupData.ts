@@ -62,3 +62,94 @@ export const fetchUserGroups = async (
     };
   }
 };
+
+export const fetchGroupById = async (
+  context: GetServerSidePropsContext
+): Promise<GetServerSidePropsResult<object>> => {
+  const session = await getSession(context);
+
+  if (!session) {
+    console.error("No session found.");
+    console.log("Session:", session);
+    return {
+      redirect: {
+        destination: "/signin",
+        permanent: false,
+      },
+    };
+  }
+
+  const groupId = context.params?.id;
+
+  if (!groupId) {
+    console.error("No group id found.");
+    console.log("Group id:", groupId);
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  try {
+    const group = await prisma.group.findUnique({
+      where: {
+        id: parseInt(groupId),
+      },
+    });
+
+    const membersList = await prisma.member.findMany({
+      where: {
+        groupId: parseInt(groupId),
+      },
+    });
+
+    const members = await prisma.user.findMany({
+      where: {
+        id: {
+          in: membersList.map((member) => member.userId),
+        },
+      },
+    });
+
+    const books = await prisma.book.findMany({
+      where: {
+        groupId: parseInt(groupId),
+      },
+    });
+
+    const prompts = await prisma.prompt.findMany({
+      where: {
+        id: {
+          in: books.map((book) => book.bookId),
+        },
+      },
+    });
+
+    const comments = await prisma.comment.findMany({
+      where: {
+        id: {
+          in: prompts.map((prompt) => prompt.promptId),
+        },
+      },
+    });
+
+    return {
+      props: {
+        group,
+        members,
+        books,
+        prompts,
+        comments,
+      },
+    };
+  } catch (error) {
+    console.error("Error fetching group:", error);
+    return {
+      props: {
+        group: {},
+      },
+    };
+  }
+};

@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 const GroupCard = ({ groupName, groupId }) => {
   const router = useRouter();
 
+  console.log(typeof groupId);
+
   const handleGroupCardClick = () => {
     router.push(`/groups/${groupId}`);
   };
