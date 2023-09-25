@@ -46,15 +46,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     // Handle POST request
     const { prompt } = req.body;
     // ...process the prompt and perform actions
-    console.log("Prompt:", prompt);
+    // console.log("Prompt:", prompt);
 
     const completion = await openai.completions.create({
       model: "gpt-3.5-turbo-instruct",
       prompt: prompt,
-      max_tokens: 150,
+      max_tokens: 100,
       temperature: 0.7,
     });
-    console.log("Completion:", completion);
+    // console.log("Completion:", completion.choices[0].text);
+
+    res.status(200).json({ completion: completion.choices[0].text });
   } else {
     // Handle other types of requests or return an error
     res.status(405).json({ error: "Method Not Allowed" });

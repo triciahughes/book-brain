@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { fetchGroupById } from "@/app/lib/data-fetching/groupData";
 import CommentCard from "../../../components/commentCard";
 
@@ -7,9 +7,13 @@ export const getServerSideProps = fetchGroupById;
 const GroupById = ({ group, members, books, prompts, comments }) => {
   //   console.log(group);
   //   console.log(members);
-  console.log(books);
+  //   console.log(books);
   //   console.log(prompts);
   //   console.log(comments);
+
+  useEffect(() => {
+    fetchGPT();
+  }, []);
 
   const membersArray = members.map((data: any) => (
     <div key={data.id} className='mb-2 hover:text-gray-600 hover:font-bold'>
@@ -37,6 +41,10 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
     data.featured === true ? data.title : null
   );
 
+  const featuredAuthor = books.map((data: any) =>
+    data.featured === true ? data.author : null
+  );
+
   const fetchGPT = async () => {
     const res = await fetch(`http://localhost:3000/api/openai`, {
       method: "POST",
@@ -45,14 +53,12 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
         Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
-        prompt: `Create a discussion prompt about the book '${fearturedBook[0]}'`,
+        prompt: `Create a discussion prompt about the book '${fearturedBook[0]}' by ${featuredAuthor[0]}`,
       }),
     });
-    const data = await res.json();
-    console.log(data);
+    const data = res.json();
+    data.then((res) => console.log(res.completion));
   };
-
-  //   fetchGPT();
 
   return (
     <div>
