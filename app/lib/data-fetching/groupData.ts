@@ -83,7 +83,7 @@ export const fetchGroupById = async (
 
   if (!groupId) {
     console.error("No group id found.");
-    console.log("Group id:", groupId);
+    // console.log("Group id:", groupId);
     return {
       redirect: {
         destination: "/",
