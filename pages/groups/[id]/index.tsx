@@ -1,5 +1,6 @@
 import React from "react";
 import { fetchGroupById } from "@/app/lib/data-fetching/groupData";
+import CommentCard from "../../../components/commentCard";
 
 export const getServerSideProps = fetchGroupById;
 
@@ -25,21 +26,31 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
         <div className='text-2xl'>Welcome to {group.name}!</div>
       </div>
       <div className='flex flex-row'>
-        <div className='border border-gray-600 rounded w-32 p-5 mx-20 mr-10'>
-          <div className='flex justify-center items-center mb-5 font-bold'>
-            Members:
-          </div>
+        <div>
+          <div className='border border-gray-600 rounded w-32 p-5 mx-20 mr-10'>
+            <div className='flex justify-center items-center mb-5 font-bold'>
+              Members:
+            </div>
 
-          <div className='flex flex-col '>{membersArray}</div>
+            <div className='flex flex-col '>{membersArray}</div>
+          </div>
         </div>
         <div className='flex flex-col w-1/2 max-w-2xl'>
-          <div className='flex-nowrap text-xl text-white mb-5'>
-            Current discussion:
-          </div>
-          <div>{promptsArray}</div>
+          <div className=''>
+            <div className='flex-nowrap text-xl text-white mb-5'>
+              Current discussion:
+            </div>
+            <div>{promptsArray}</div>
 
-          <br className='divided-y divide-white-400' />
+            <br className='divided-y divide-white-400' />
+          </div>
           <div className='flex justify-center'>Comments:</div>
+          <div className='flex flex-col mt-5 w-full'>
+            <CommentCard />
+            <CommentCard />
+            <CommentCard />
+            <CommentCard />
+          </div>
         </div>
       </div>
     </div>

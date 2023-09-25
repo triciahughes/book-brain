@@ -18,6 +18,10 @@ const Dashboard = () => {
         <FeedCard />
         <FeedCard />
         <FeedCard />
+        <FeedCard />
+        <FeedCard />
+        <FeedCard />
+        <FeedCard />
       </div>
     </div>
   );
