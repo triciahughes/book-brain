@@ -83,7 +83,7 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
             <div className='flex-nowrap text-xl text-white mb-5'>
               Current discussion:
             </div>
-            <div>{gpt}</div>
+            <div>{promptsArray}</div>
 
             <br className='divided-y divide-white-400' />
           </div>
