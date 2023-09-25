@@ -51,7 +51,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const completion = await openai.completions.create({
       model: "gpt-3.5-turbo-instruct",
       prompt: prompt,
-      max_tokens: 100,
+      max_tokens: 75,
       temperature: 0.7,
     });
     // console.log("Completion:", completion.choices[0].text);

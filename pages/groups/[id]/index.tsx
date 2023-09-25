@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { fetchGroupById } from "@/app/lib/data-fetching/groupData";
 import CommentCard from "../../../components/commentCard";
 
 export const getServerSideProps = fetchGroupById;
 
 const GroupById = ({ group, members, books, prompts, comments }) => {
+  const [gpt, setGpt] = useState(null);
   //   console.log(group);
   //   console.log(members);
   //   console.log(books);
@@ -57,8 +58,10 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
       }),
     });
     const data = res.json();
-    data.then((res) => console.log(res.completion));
+    data.then((res) => setGpt(res.completion.replace("", "")));
   };
+
+  console.log("PROMPT: ", gpt);
 
   return (
     <div>
@@ -80,7 +83,7 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
             <div className='flex-nowrap text-xl text-white mb-5'>
               Current discussion:
             </div>
-            <div>{promptsArray}</div>
+            <div>{gpt}</div>
 
             <br className='divided-y divide-white-400' />
           </div>
