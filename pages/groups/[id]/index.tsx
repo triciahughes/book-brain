@@ -52,6 +52,14 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
             <CommentCard />
           </div>
         </div>
+        <div className='ml-20'>
+          <div>Current Book:</div>
+          <div>Book title here</div>
+          <div>Author here</div>
+          <div>Book cover here</div>
+          <div>Genre</div>
+          <div>publication date</div>
+        </div>
       </div>
     </div>
   );
