@@ -9,15 +9,6 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
   const [gpt, setGpt] = useState(null);
   const [mouseOverImg, setMouseOverImg] = useState(false);
   const [imgClicked, setImgClicked] = useState(false);
-  //   console.log(group);
-  //   console.log(members);
-  //   console.log(books);
-  //   console.log(prompts);
-  //   console.log(comments);
-
-  //   useEffect(() => {
-  //     fetchGPT();
-  //   }, []);
 
   const membersArray = members.map((data: any) => (
     <div key={data.id} className='mb-2 hover:text-gray-600 hover:font-bold'>
@@ -34,13 +25,11 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
   const handleImgMouseOver = (e: any) => {
     e.preventDefault();
     setMouseOverImg(true);
-    // console.log(mouseOverImg);
   };
 
   const handleImgMouseLeave = (e: any) => {
     e.preventDefault();
     setMouseOverImg(false);
-    // console.log(mouseOverImg);
   };
 
   const handleImgText = () => {
@@ -48,9 +37,7 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
   };
 
   const handleMoreInfoClick = () => {
-    // console.log(imgClicked);
     setImgClicked((current) => !current);
-    // console.log(imgClicked);
   };
 
   const booksArray = books.map((data: any) =>
@@ -114,29 +101,6 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
     )
   );
 
-  //   const booksArray = books.map((data: any) => (
-  //     <div key={data.id} className='ml-9 mb-2'>
-  //       {/* <div>{data.author}</div> */}
-  //       <Image
-  //         src={data.image}
-  //         width={150}
-  //         height={150}
-  //         alt='book cover'
-  //         className='rounded-md border-2 hover:contrast-50'
-  //         onMouseOver={handleImgMouseOver}
-  //         onMouseLeave={handleImgMouseLeave}
-  //       />
-  //       {mouseOverImg && (
-  //         <div className='absolute top-0 left-0 text-white text-sm'>
-  //           {handleImgText()}
-  //         </div>
-  //       )}
-  //       <div className='mt-2'>{data.title}</div>
-  //       {/* <div>{data.genre}</div>
-  //       <div>{data.publicationYear}</div> */}
-  //     </div>
-  //   ));
-
   const fearturedBook = books.map((data: any) =>
     data.featured === true ? data.title : null
   );
@@ -159,8 +123,6 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
     const data = res.json();
     data.then((res) => setGpt(res.completion.replace("", "")));
   };
-
-  //   console.log("PROMPT: ", gpt);
 
   return (
     <div>
@@ -203,12 +165,6 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
         <div className='ml-20'>
           <div className='ml-9 mb-2'>Current Book:</div>
           {booksArray}
-          {/* <div>Current Book:</div>
-          <div>Book title here</div>
-          <div>Author here</div>
-          <div>Book cover here</div>
-          <div>Genre</div>
-          <div>publication date</div> */}
         </div>
       </div>
     </div>
