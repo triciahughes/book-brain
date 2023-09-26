@@ -1,10 +1,13 @@
 import React, { useState } from "react";
+import UpArrow from "../public/up-arrow.png";
+import DownArrow from "../public/down-arrow.png";
 
 import Image from "next/image";
 
 const FeaturedBookPanel = ({ books }) => {
   const [mouseOverImg, setMouseOverImg] = useState(false);
   const [imgClicked, setImgClicked] = useState(false);
+  const [collapseClicked, setCollapseClicked] = useState(false);
 
   const handleImgMouseOver = (e: any) => {
     e.preventDefault();
@@ -22,6 +25,22 @@ const FeaturedBookPanel = ({ books }) => {
 
   const handleMoreInfoClick = () => {
     setImgClicked((current) => !current);
+  };
+
+  const handleCollapseClick = () => {
+    setCollapseClicked((current) => !current);
+  };
+
+  const handleCollapseClickIcon = () => {
+    return collapseClicked ? UpArrow : DownArrow;
+  };
+
+  const handleBookPanelCollapse = () => {
+    return collapseClicked ? booksArray : null;
+  };
+
+  const handleBookPanelHeightAdj = () => {
+    return collapseClicked ? "h-96" : "h-14";
   };
 
   const booksArray = books?.map((data: any) =>
@@ -86,17 +105,25 @@ const FeaturedBookPanel = ({ books }) => {
   );
 
   return (
-    <div className='flex flex-col place-items-center w-96 h-96 ml-10 mr-10 bg-gray-800 rounded-lg'>
-      <div className='flex flex-row justify-between place-self-start space-x-7'>
+    <div
+      className={`flex flex-col place-items-center w-96 ${handleBookPanelHeightAdj()} ml-10 mr-10 bg-gray-800 rounded-lg`}
+    >
+      <div className='flex flex-row justify-between place-self-start space-x-6'>
         <div className='p-4 font-bold text-lg'>Featured Book:</div>
 
         <div className='p-4'>
-          <div className='hover:font-extrabold hover:text-lg hover:cursor-pointer'>
-            X
-          </div>
+          <Image
+            onClick={handleCollapseClick}
+            className='hover:cursor-pointer hover:scale-125 '
+            src={handleCollapseClickIcon()}
+            width={20}
+            height={20}
+            alt='arrow icon'
+          />
         </div>
       </div>
-      {booksArray}
+      {/* {booksArray} */}
+      {handleBookPanelCollapse()}
     </div>
   );
 };
