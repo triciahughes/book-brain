@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { fetchGroupById } from "@/app/lib/data-fetching/groupData";
+import Image from "next/image";
 import CommentCard from "../../../components/commentCard";
 
 export const getServerSideProps = fetchGroupById;
 
 const GroupById = ({ group, members, books, prompts, comments }) => {
   const [gpt, setGpt] = useState(null);
+  const [mouseOverImg, setMouseOverImg] = useState(false);
   //   console.log(group);
   //   console.log(members);
   //   console.log(books);
@@ -28,16 +30,76 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
     </div>
   ));
 
+  const handleImgMouseOver = (e: any) => {
+    e.preventDefault();
+    setMouseOverImg(true);
+    // console.log(mouseOverImg);
+  };
+
+  const handleImgMouseLeave = (e: any) => {
+    e.preventDefault();
+    setMouseOverImg(false);
+    // console.log(mouseOverImg);
+  };
+
+  const handleImgText = () => {
+    return mouseOverImg ? "Click for more info" : null;
+  };
+
+  const handleMoreInfoClick = () => {
+    console.log("clicked");
+  };
+
   const booksArray = books.map((data: any) => (
-    <div key={data.id} className='ml-9 mb-2'>
-      <div>Current Book:</div>
-      <div>{data.title}</div>
-      <div>{data.author}</div>
-      <div>Image here</div>
-      <div>{data.genre}</div>
-      <div>{data.publicationYear}</div>
+    <div
+      key={data.id}
+      className='relative ml-9 mb-2'
+      style={{ width: 150, height: 150 }}
+    >
+      <Image
+        src={data.image}
+        width={150}
+        height={150}
+        alt='book cover'
+        className='rounded-md border-2 hover:contrast-50 hover:opacity-50 hover:blur-sm'
+        onMouseOver={handleImgMouseOver}
+        onMouseLeave={handleImgMouseLeave}
+      />
+      {mouseOverImg && (
+        <div
+          className='absolute left-0 bottom-5 text-white text-center font-bold text-sm p-2'
+          onClick={handleMoreInfoClick}
+        >
+          {handleImgText()}
+        </div>
+      )}
+      <div className='mt-2'>{data.title}</div>
     </div>
   ));
+
+  //   const booksArray = books.map((data: any) => (
+  //     <div key={data.id} className='ml-9 mb-2'>
+  //       {/* <div>{data.author}</div> */}
+  //       <Image
+  //         src={data.image}
+  //         width={150}
+  //         height={150}
+  //         alt='book cover'
+  //         className='rounded-md border-2 hover:contrast-50'
+  //         onMouseOver={handleImgMouseOver}
+  //         onMouseLeave={handleImgMouseLeave}
+  //       />
+  //       {mouseOverImg && (
+  //         <div className='absolute top-0 left-0 text-white text-sm'>
+  //           {handleImgText()}
+  //         </div>
+  //       )}
+  //       <div className='mt-2'>{data.title}</div>
+  //       {/* <div>{data.genre}</div>
+  //       <div>{data.publicationYear}</div> */}
+  //     </div>
+  //   ));
+
   const fearturedBook = books.map((data: any) =>
     data.featured === true ? data.title : null
   );
@@ -61,7 +123,7 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
     data.then((res) => setGpt(res.completion.replace("", "")));
   };
 
-  console.log("PROMPT: ", gpt);
+  //   console.log("PROMPT: ", gpt);
 
   return (
     <div>
@@ -102,6 +164,7 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
           </div>
         </div>
         <div className='ml-20'>
+          <div className='ml-9 mb-2'>Current Book:</div>
           {booksArray}
           {/* <div>Current Book:</div>
           <div>Book title here</div>
