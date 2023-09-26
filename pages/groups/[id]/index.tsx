@@ -12,9 +12,9 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
   //   console.log(prompts);
   //   console.log(comments);
 
-  useEffect(() => {
-    fetchGPT();
-  }, []);
+  //   useEffect(() => {
+  //     fetchGPT();
+  //   }, []);
 
   const membersArray = members.map((data: any) => (
     <div key={data.id} className='mb-2 hover:text-gray-600 hover:font-bold'>
@@ -76,6 +76,12 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
             </div>
 
             <div className='flex flex-col '>{membersArray}</div>
+            <button
+              className='flex justify-center items-center border border-gray-500 rounded p-2 mt-2 bg-green-400 text-black hover:bg-green-800 hover:text-white'
+              onClick={fetchGPT}
+            >
+              Generate Prompt
+            </button>
           </div>
         </div>
         <div className='flex flex-col w-1/2 max-w-2xl'>
