@@ -67,7 +67,7 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
             </button>
           </div>
         </div>
-        <div className='flex flex-col w-1/2 max-w-2xl'>
+        <div className='flex flex-col w-full max-w-full'>
           <div className=''>
             <div className='flex-nowrap text-xl text-white mb-5'>
               Current discussion:

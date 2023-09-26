@@ -28,7 +28,7 @@ const FeaturedBookPanel = ({ books }) => {
     imgClicked ? (
       <div
         key={data.id}
-        className='relative ml-9 mb-2'
+        className='relative mb-4'
         style={{ width: 150, height: 150 }}
       >
         {" "}
@@ -59,7 +59,7 @@ const FeaturedBookPanel = ({ books }) => {
     ) : (
       <div
         key={data.id}
-        className='relative ml-9 mb-2'
+        className='relative mb-4'
         style={{ width: 150, height: 150 }}
       >
         <Image
@@ -80,14 +80,22 @@ const FeaturedBookPanel = ({ books }) => {
             {handleImgText()}
           </div>
         )}
-        <div className='mt-2'>{data.title}</div>
+        <div className='mt-4 text-center'>{data.title}</div>
       </div>
     )
   );
 
   return (
-    <div className='ml-20'>
-      <div className='ml-9 mb-2'>Current Book:</div>
+    <div className='flex flex-col place-items-center w-96 h-96 ml-10 mr-10 bg-gray-800 rounded-lg'>
+      <div className='flex flex-row justify-between place-self-start space-x-7'>
+        <div className='p-4 font-bold text-lg'>Featured Book:</div>
+
+        <div className='p-4'>
+          <div className='hover:font-extrabold hover:text-lg hover:cursor-pointer'>
+            X
+          </div>
+        </div>
+      </div>
       {booksArray}
     </div>
   );
