@@ -8,8 +8,6 @@ export const getServerSideProps = fetchGroupById;
 
 const GroupById = ({ group, members, books, prompts, comments }) => {
   const [gpt, setGpt] = useState(null);
-  const [mouseOverImg, setMouseOverImg] = useState(false);
-  const [imgClicked, setImgClicked] = useState(false);
 
   const membersArray = members.map((data: any) => (
     <div key={data.id} className='mb-2 hover:text-gray-600 hover:font-bold'>

@@ -11,7 +11,7 @@ const GroupCard = ({ groupName, groupId }) => {
   };
   return (
     <div
-      className='p-2 px-4 mb-2 rounded-xl border border-purple-500'
+      className='p-2 px-4 mb-2 rounded-xl border border-purple-500 hover:bg-gray-900 hover:cursor-pointer'
       onClick={handleGroupCardClick}
     >
       <div>{groupName}</div>
