@@ -43,6 +43,7 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
     const data = res.json();
     data.then((res) => setGpt(res.completion.replace("", "")));
   };
+  console.log(gpt);
 
   return (
     <div>
