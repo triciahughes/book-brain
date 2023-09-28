@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
+import UpArrow from "../../../public/up-arrow.png";
 import { fetchGroupById } from "@/app/lib/data-fetching/groupData";
 import FeaturedBookPanel from "@/components/featuredBookPanel";
-import Image from "next/image";
 import CommentCard from "../../../components/commentCard";
 
 export const getServerSideProps = fetchGroupById;
@@ -51,20 +52,29 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
         <div className='text-2xl'>Welcome to {group.name}!</div>
       </div>
       <div className='flex flex-row'>
-        <div>
-          <div className='border border-gray-600 rounded w-32 p-5 mx-20 mr-10'>
-            <div className='flex justify-center items-center mb-5 font-bold'>
-              Members:
+        <div className='flex flex-col bg-gray-800 rounded-lg w-64 h-64 p-5 mx-10'>
+          <div className='flex flex-row space-x-8'>
+            <div className='flex place-self-start mb-5 font-bold'>Members:</div>
+            <div className=''>
+              <Image
+                // onClick={handleCollapseClick}
+                className='hover:cursor-pointer hover:scale-125 '
+                src={UpArrow}
+                // src={handleCollapseClickIcon()}
+                width={20}
+                height={20}
+                alt='arrow icon'
+              />
             </div>
-
-            <div className='flex flex-col '>{membersArray}</div>
-            <button
-              className='flex justify-center items-center border border-gray-500 rounded p-2 mt-2 bg-green-400 text-black hover:bg-green-800 hover:text-white'
-              onClick={fetchGPT}
-            >
-              Generate Prompt
-            </button>
           </div>
+
+          <div className='flex flex-col'>{membersArray}</div>
+          <button
+            className='flex justify-center items-center border border-gray-500 rounded p-2 mt-2 bg-green-400 text-black hover:bg-green-800 hover:text-white'
+            onClick={fetchGPT}
+          >
+            Generate Prompt
+          </button>
         </div>
         <div className='flex flex-col w-full max-w-full'>
           <div className=''>

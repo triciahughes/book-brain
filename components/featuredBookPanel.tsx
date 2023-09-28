@@ -109,7 +109,7 @@ const FeaturedBookPanel = ({ books }) => {
       className={`flex flex-col place-items-center w-96 ${handleBookPanelHeightAdj()} ml-10 mr-10 bg-gray-800 rounded-lg`}
     >
       <div className='flex flex-row justify-between place-self-start space-x-6'>
-        <div className='p-4 font-bold text-lg'>Featured Book:</div>
+        <div className='p-4 font-bold text-md'>Featured Book:</div>
 
         <div className='p-4'>
           <Image
