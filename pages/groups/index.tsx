@@ -45,11 +45,11 @@ const Groups: React.FC<GroupsProps> = ({
       </div>
       <div className='flex justify-evenly items-start mx-10 mb-10'>
         {" "}
-        <div className='flex flex-col items-center min-h-[300px]'>
+        <div className='flex flex-col items-center min-h-[300px] '>
           {" "}
           {renderGroupCards(userHostGroups)}
         </div>
-        <div className='flex flex-col items-center min-h-[300px]'>
+        <div className='flex flex-col items-center min-h-[300px] '>
           {" "}
           {renderGroupCards(userMemberGroups)}
         </div>

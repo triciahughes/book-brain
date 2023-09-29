@@ -1,22 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { fetchGroupById } from "@/app/lib/data-fetching/groupData";
 import Image from "next/image";
+import UpArrow from "../../../public/up-arrow.png";
+import { fetchGroupById } from "@/app/lib/data-fetching/groupData";
+import FeaturedBookPanel from "@/components/featuredBookPanel";
 import CommentCard from "../../../components/commentCard";
 
 export const getServerSideProps = fetchGroupById;
 
 const GroupById = ({ group, members, books, prompts, comments }) => {
   const [gpt, setGpt] = useState(null);
-  const [mouseOverImg, setMouseOverImg] = useState(false);
-  //   console.log(group);
-  //   console.log(members);
-  //   console.log(books);
-  //   console.log(prompts);
-  //   console.log(comments);
-
-  //   useEffect(() => {
-  //     fetchGPT();
-  //   }, []);
 
   const membersArray = members.map((data: any) => (
     <div key={data.id} className='mb-2 hover:text-gray-600 hover:font-bold'>
@@ -29,76 +21,6 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
       {data.promptStr}
     </div>
   ));
-
-  const handleImgMouseOver = (e: any) => {
-    e.preventDefault();
-    setMouseOverImg(true);
-    // console.log(mouseOverImg);
-  };
-
-  const handleImgMouseLeave = (e: any) => {
-    e.preventDefault();
-    setMouseOverImg(false);
-    // console.log(mouseOverImg);
-  };
-
-  const handleImgText = () => {
-    return mouseOverImg ? "Click for more info" : null;
-  };
-
-  const handleMoreInfoClick = () => {
-    console.log("clicked");
-  };
-
-  const booksArray = books.map((data: any) => (
-    <div
-      key={data.id}
-      className='relative ml-9 mb-2'
-      style={{ width: 150, height: 150 }}
-    >
-      <Image
-        src={data.image}
-        width={150}
-        height={150}
-        alt='book cover'
-        className='rounded-md border-2 hover:contrast-50 hover:opacity-50 hover:blur-sm'
-        onMouseOver={handleImgMouseOver}
-        onMouseLeave={handleImgMouseLeave}
-      />
-      {mouseOverImg && (
-        <div
-          className='absolute left-0 bottom-5 text-white text-center font-bold text-sm p-2'
-          onClick={handleMoreInfoClick}
-        >
-          {handleImgText()}
-        </div>
-      )}
-      <div className='mt-2'>{data.title}</div>
-    </div>
-  ));
-
-  //   const booksArray = books.map((data: any) => (
-  //     <div key={data.id} className='ml-9 mb-2'>
-  //       {/* <div>{data.author}</div> */}
-  //       <Image
-  //         src={data.image}
-  //         width={150}
-  //         height={150}
-  //         alt='book cover'
-  //         className='rounded-md border-2 hover:contrast-50'
-  //         onMouseOver={handleImgMouseOver}
-  //         onMouseLeave={handleImgMouseLeave}
-  //       />
-  //       {mouseOverImg && (
-  //         <div className='absolute top-0 left-0 text-white text-sm'>
-  //           {handleImgText()}
-  //         </div>
-  //       )}
-  //       <div className='mt-2'>{data.title}</div>
-  //       {/* <div>{data.genre}</div>
-  //       <div>{data.publicationYear}</div> */}
-  //     </div>
-  //   ));
 
   const fearturedBook = books.map((data: any) =>
     data.featured === true ? data.title : null
@@ -122,8 +44,7 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
     const data = res.json();
     data.then((res) => setGpt(res.completion.replace("", "")));
   };
-
-  //   console.log("PROMPT: ", gpt);
+  console.log(gpt);
 
   return (
     <div>
@@ -131,22 +52,31 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
         <div className='text-2xl'>Welcome to {group.name}!</div>
       </div>
       <div className='flex flex-row'>
-        <div>
-          <div className='border border-gray-600 rounded w-32 p-5 mx-20 mr-10'>
-            <div className='flex justify-center items-center mb-5 font-bold'>
-              Members:
+        <div className='flex flex-col bg-gray-800 rounded-lg w-64 h-64 p-5 mx-10'>
+          <div className='flex flex-row space-x-8'>
+            <div className='flex place-self-start mb-5 font-bold'>Members:</div>
+            <div className=''>
+              <Image
+                // onClick={handleCollapseClick}
+                className='hover:cursor-pointer hover:scale-125 '
+                src={UpArrow}
+                // src={handleCollapseClickIcon()}
+                width={20}
+                height={20}
+                alt='arrow icon'
+              />
             </div>
-
-            <div className='flex flex-col '>{membersArray}</div>
-            <button
-              className='flex justify-center items-center border border-gray-500 rounded p-2 mt-2 bg-green-400 text-black hover:bg-green-800 hover:text-white'
-              onClick={fetchGPT}
-            >
-              Generate Prompt
-            </button>
           </div>
+
+          <div className='flex flex-col'>{membersArray}</div>
+          <button
+            className='flex justify-center items-center border border-gray-500 rounded p-2 mt-2 bg-green-400 text-black hover:bg-green-800 hover:text-white'
+            onClick={fetchGPT}
+          >
+            Generate Prompt
+          </button>
         </div>
-        <div className='flex flex-col w-1/2 max-w-2xl'>
+        <div className='flex flex-col w-full max-w-full'>
           <div className=''>
             <div className='flex-nowrap text-xl text-white mb-5'>
               Current discussion:
@@ -163,16 +93,8 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
             <CommentCard />
           </div>
         </div>
-        <div className='ml-20'>
-          <div className='ml-9 mb-2'>Current Book:</div>
-          {booksArray}
-          {/* <div>Current Book:</div>
-          <div>Book title here</div>
-          <div>Author here</div>
-          <div>Book cover here</div>
-          <div>Genre</div>
-          <div>publication date</div> */}
-        </div>
+
+        <FeaturedBookPanel books={books} />
       </div>
     </div>
   );
