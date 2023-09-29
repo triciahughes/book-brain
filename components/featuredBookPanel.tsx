@@ -35,10 +35,6 @@ const FeaturedBookPanel = ({ books, membersArray }) => {
     return memsCollapseClicked ? UpArrow : DownArrow;
   };
 
-  // const handleBookPanelCollapse = () => {
-  //   return collapseClicked ? booksArray : null;
-  // };
-
   const handleBookPanelHeightAdj = () => {
     return memsCollapseClicked ? "h-screen" : "h-fit";
   };
@@ -48,12 +44,12 @@ const FeaturedBookPanel = ({ books, membersArray }) => {
   const bookArr = books?.map((data: any) =>
     imgClicked ? (
       <div
-        className={`flex flex-col place-items-center w-96 ${handleBookPanelHeightAdj()} ml-10 mr-10 bg-zinc-800 rounded-xl`}
+        className={`flex flex-col place-items-center w-96 ${handleBookPanelHeightAdj()} ml-10 mr-10 bg-zinc-600 rounded-xl`}
       >
         <div className='bg-zinc-600 rounded-xl w-64 h-14 mt-4 mb-2.5'>
           <div className='p-4 font-bold text-sm'>{data.title}</div>
         </div>
-        <div key={data.id} className='bg-zinc-600 w-64 h-80 rounded-xl mb-2'>
+        <div key={data.id} className='bg-zinc-200 w-64 h-80 rounded-xl mb-2'>
           {mouseOverImg && (
             <div
               className='absolute ml-14 mt-14 text-white text-center font-bold text-sm p-2'
@@ -93,12 +89,12 @@ const FeaturedBookPanel = ({ books, membersArray }) => {
       </div>
     ) : (
       <div
-        className={`flex flex-col place-items-center w-96 ${handleBookPanelHeightAdj()} ml-10 mr-10 bg-zinc-800 rounded-xl`}
+        className={`flex flex-col place-items-center w-96 ${handleBookPanelHeightAdj()} ml-10 mr-10 bg-zinc-400 rounded-xl`}
       >
-        <div className='bg-zinc-600 rounded-xl w-64 h-14 mt-4 mb-2.5'>
-          <div className='p-4 font-bold text-sm'>{data.title}</div>
+        <div className='bg-zinc-200 rounded-xl w-64 h-14 mt-4 mb-2.5'>
+          <div className='p-4 font-bold text-sm text-black'>{data.title}</div>
         </div>
-        <div key={data.id} className='bg-zinc-600 w-64 h-80 rounded-xl mb-2'>
+        <div key={data.id} className='bg-zinc-200 w-64 h-80 rounded-xl mb-2'>
           {mouseOverImg && (
             <div
               className='absolute ml-14 mt-28 text-white text-center font-bold text-sm p-2'

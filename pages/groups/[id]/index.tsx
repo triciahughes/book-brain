@@ -17,10 +17,14 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
   ));
 
   const promptsArray = prompts.map((data: any) => (
-    <div key={data.id} className='ml-9 mb-2'>
+    <div key={data.id} className='mb-2 w-10/12'>
       {data.promptStr}
     </div>
   ));
+
+  const handleTextValue = () => {
+    return gpt ? gpt : "";
+  };
 
   const fearturedBook = books.map((data: any) =>
     data.featured === true ? data.title : null
@@ -42,56 +46,51 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
       }),
     });
     const data = res.json();
-    data.then((res) => setGpt(res.completion.replace("", "")));
+    data.then((res) => setGpt(res.completion.trim().replace("", "")));
   };
   console.log(gpt);
 
   return (
     <div>
-      {/* <div className='flex justify-center items-center p-10 mb-10 bg-gray-900 w-4/5 mx-auto'>
-        <div className='text-2xl'>Welcome to {group.name}!</div>
-      </div> */}
       <div className='flex flex-row'>
         <FeaturedBookPanel books={books} membersArray={membersArray} />
-        {/* <div className='flex flex-col bg-gray-800 rounded-lg w-64 h-64 p-5 mx-10'>
-          <div className='flex flex-row space-x-8'>
-            <div className='flex place-self-start mb-5 font-bold'>Members:</div>
-            <div className=''>
-              <Image
-                // onClick={handleCollapseClick}
-                className='hover:cursor-pointer hover:scale-125 '
-                src={UpArrow}
-                // src={handleCollapseClickIcon()}
-                width={20}
-                height={20}
-                alt='arrow icon'
-              />
-            </div>
-          </div>
-
-          <div className='flex flex-col'>{membersArray}</div>
-          <button
-            className='flex justify-center items-center border border-gray-500 rounded p-2 mt-2 bg-green-400 text-black hover:bg-green-800 hover:text-white'
-            onClick={fetchGPT}
-          >
-            Generate Prompt
-          </button>
-        </div> */}
-        <div className='flex flex-col w-full max-w-full'>
+        <div className='flex flex-col w-full max-w-10/12'>
           <div className=''>
-            <div className='flex-nowrap text-xl text-white mb-5'>
-              Current discussion:
+            <div className='flex flex-row space-x-96 mb-4'>
+              <div className='flex-nowrap text-3xl font-bold text-white mr-8'>
+                Discussion
+              </div>
+              <button
+                className='w-48 p-2 bg-purple-600 rounded-full hover:bg-purple-800'
+                onClick={fetchGPT}
+              >
+                Generate Prompt
+              </button>
             </div>
-            <div>{promptsArray}</div>
+            <div className='bg-zinc-400 w-8/12 h-80 rounded-2xl mb-4'>
+              <div className='p-4'>
+                <div className='relative p-4 flex flex-col bg-zinc-200 w-full h-72 rounded-2xl'>
+                  <textarea
+                    className='bg-zinc-200 w-auto h-52 rounded-2xl text-black mb-2 resize-none border border-zinc-200 focus:outline-none focus:ring-0 focus:border-transparent'
+                    placeholder='Start a discussion...'
+                    value={`${handleTextValue()}`}
+                  ></textarea>
+                  <button className='absolute bottom-4 right-4 w-24 p-2 bg-sky-400 rounded-full hover:bg-sky-600'>
+                    Done
+                  </button>
+                </div>
+              </div>
+            </div>
+            {/* <div>{promptsArray}</div> */}
 
             <br className='divided-y divide-white-400' />
           </div>
-          <div className='flex justify-center'>Comments:</div>
-          <div className='flex flex-col mt-5 w-full'>
+          {/* <div className='flex'></div> */}
+          <div className='flex flex-col mt-5 w-8/12'>
+            {/* <CommentCard />
             <CommentCard />
             <CommentCard />
-            <CommentCard />
-            <CommentCard />
+            <CommentCard /> */}
           </div>
         </div>
       </div>
