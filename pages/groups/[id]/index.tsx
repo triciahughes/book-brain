@@ -48,11 +48,12 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
 
   return (
     <div>
-      <div className='flex justify-center items-center p-10 mb-10 bg-gray-900 w-4/5 mx-auto'>
+      {/* <div className='flex justify-center items-center p-10 mb-10 bg-gray-900 w-4/5 mx-auto'>
         <div className='text-2xl'>Welcome to {group.name}!</div>
-      </div>
+      </div> */}
       <div className='flex flex-row'>
-        <div className='flex flex-col bg-gray-800 rounded-lg w-64 h-64 p-5 mx-10'>
+        <FeaturedBookPanel books={books} membersArray={membersArray} />
+        {/* <div className='flex flex-col bg-gray-800 rounded-lg w-64 h-64 p-5 mx-10'>
           <div className='flex flex-row space-x-8'>
             <div className='flex place-self-start mb-5 font-bold'>Members:</div>
             <div className=''>
@@ -75,7 +76,7 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
           >
             Generate Prompt
           </button>
-        </div>
+        </div> */}
         <div className='flex flex-col w-full max-w-full'>
           <div className=''>
             <div className='flex-nowrap text-xl text-white mb-5'>
@@ -93,8 +94,6 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
             <CommentCard />
           </div>
         </div>
-
-        <FeaturedBookPanel books={books} />
       </div>
     </div>
   );
