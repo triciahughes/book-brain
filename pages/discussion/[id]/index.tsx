@@ -4,10 +4,13 @@ import FeaturedBookPanel from "@/components/featuredBookPanel";
 import CommentCard from "@/components/commentCard";
 import Image from "next/image";
 import LeftArrow from "../../../public/left-arrow.png";
+import { useRouter } from "next/router";
 
 export const getServerSideProps = fetchDiscussionById;
 
 const DiscussionById = ({ books, members, discussion, comments }) => {
+  const router = useRouter();
+  console.log(books);
   const membersArray = members.map((data: any) => (
     <div key={data.id} className='mb-2 hover:text-gray-600 hover:font-bold'>
       {data.firstName}
@@ -20,6 +23,7 @@ const DiscussionById = ({ books, members, discussion, comments }) => {
 
   const handleBackClick = () => {
     console.log("go back to groups / discussions page");
+    router.push(`/groups/${books.groupId}`);
   };
 
   return (

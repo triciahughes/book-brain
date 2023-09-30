@@ -15,9 +15,7 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
   ));
 
   const promptsArray = prompts.map((data: any) => (
-    <div key={data.id} className='mb-2 w-10/12'>
-      {data.promptStr}
-    </div>
+    <DiscussionCard key={data.id} prompts={data} promptId={data.id} />
   ));
 
   const handleTextValue = () => {
@@ -82,7 +80,8 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
           </div>
 
           <div className='flex flex-col mt-5 w-8/12'>
-            <DiscussionCard books={books} />
+            {promptsArray}
+            {/* <DiscussionCard promptsArray={promptsArray} /> */}
 
             {/* <CommentCard />
             <CommentCard />
