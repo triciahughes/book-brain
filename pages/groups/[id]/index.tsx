@@ -82,7 +82,8 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
           </div>
 
           <div className='flex flex-col mt-5 w-8/12'>
-            <DiscussionCard />
+            <DiscussionCard books={books} />
+
             {/* <CommentCard />
             <CommentCard />
             <CommentCard />

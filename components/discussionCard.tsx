@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import RightArrow from "../public/right-arrow.png";
 
-const DiscussionCard = () => {
+const DiscussionCard = ({ books }) => {
   return (
     <>
       <div className='flex flex-col border border-zinc-400 rounded-xl py-2 px-4 mb-4 hover:bg-zinc-900'>
