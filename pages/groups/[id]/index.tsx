@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import UpArrow from "../../../public/up-arrow.png";
 import { fetchGroupById } from "@/app/lib/data-fetching/groupData";
 import FeaturedBookPanel from "@/components/featuredBookPanel";
-import CommentCard from "../../../components/commentCard";
+import DiscussionCard from "@/components/discussionCard";
 
 export const getServerSideProps = fetchGroupById;
 
@@ -81,12 +79,10 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
                 </div>
               </div>
             </div>
-            {/* <div>{promptsArray}</div> */}
-
-            <br className='divided-y divide-white-400' />
           </div>
-          {/* <div className='flex'></div> */}
+
           <div className='flex flex-col mt-5 w-8/12'>
+            <DiscussionCard />
             {/* <CommentCard />
             <CommentCard />
             <CommentCard />
