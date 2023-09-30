@@ -61,21 +61,21 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
                 Discussion
               </div>
               <button
-                className='w-48 p-2 bg-purple-600 rounded-full hover:bg-purple-800'
+                className='text-zinc-200 font-semibold w-48 p-2 bg-purple-600 rounded-full hover:bg-purple-800'
                 onClick={fetchGPT}
               >
                 Generate Prompt
               </button>
             </div>
-            <div className='bg-zinc-400 w-8/12 h-80 rounded-2xl mb-4'>
+            <div className='bg-zinc-900 w-8/12 h-80 rounded-2xl mb-4'>
               <div className='p-4'>
-                <div className='relative p-4 flex flex-col bg-zinc-200 w-full h-72 rounded-2xl'>
+                <div className='relative p-4 flex flex-col bg-zinc-800 w-full h-72 rounded-2xl'>
                   <textarea
-                    className='bg-zinc-200 w-auto h-52 rounded-2xl text-black mb-2 resize-none border border-zinc-200 focus:outline-none focus:ring-0 focus:border-transparent'
+                    className='bg-zinc-800 w-auto h-52 rounded-2xl text-zinc-100 mb-2 resize-none border border-zinc-800 focus:outline-none focus:ring-0 focus:border-transparent'
                     placeholder='Start a discussion...'
                     value={`${handleTextValue()}`}
                   ></textarea>
-                  <button className='absolute bottom-4 right-4 w-24 p-2 bg-sky-400 rounded-full hover:bg-sky-600'>
+                  <button className='absolute bottom-4 right-4 w-24 p-2 bg-sky-600 rounded-full hover:bg-sky-800 text-zinc-200 font-semibold'>
                     Done
                   </button>
                 </div>
