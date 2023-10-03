@@ -8,7 +8,7 @@ export const getServerSideProps = fetchGroupById;
 const GroupById = ({ group, members, books, prompts, comments }) => {
   const [gptDiscussion, setGptDiscussion] = useState("");
   const [gptSubject, setGptSubject] = useState("");
-  const [discussionText, setDiscussionText] = useState("");
+  const [promptStr, setPromptStr] = useState("");
   const [subjectText, setSubjectText] = useState("");
 
   const membersArray = members.map((data: any) => (
@@ -18,13 +18,18 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
   ));
 
   const promptsArray = prompts.map((data: any) => (
-    <DiscussionCard key={data.id} prompts={data} promptId={data.id} />
+    <DiscussionCard
+      key={data.id}
+      prompts={data}
+      promptId={data.id}
+      subject={subjectText}
+    />
   ));
 
   const handleDiscussionTextChange = (e) => {
     return gptDiscussion
-      ? setDiscussionText(gptDiscussion)
-      : setDiscussionText(e.target.value);
+      ? setPromptStr(gptDiscussion)
+      : setPromptStr(e.target.value);
     // setDiscussionText(e.target.value && gpt);
   };
 
@@ -35,7 +40,7 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
   };
 
   const handleDiscussionTextValue = () => {
-    return gptDiscussion ? gptDiscussion : discussionText;
+    return gptDiscussion ? gptDiscussion : promptStr;
   };
 
   const handleSubjectTextValue = () => {
@@ -65,7 +70,7 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
 
       const data = await res.json();
       const discussion = data.completion.trim().replace(/"/g, "");
-      setDiscussionText(discussion);
+      setPromptStr(discussion);
       await fetchSubject(discussion);
     } catch (error) {
       console.error("Error fetching discussion:", error);
@@ -81,7 +86,7 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
           Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
         },
         body: JSON.stringify({
-          prompt: `Create a brief one line summary for the following discussion prompt: '${discussion}'`,
+          prompt: `In 10 words or less, create a subject line for the following discussion prompt: '${discussion}'`,
         }),
       });
 
@@ -93,8 +98,29 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
     }
   };
 
-  console.log(discussionText);
-  console.log(subjectText);
+  const handlePromptPost = async () => {
+    try {
+      fetch(`http://localhost:3000/api/prompt`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          bookId: books[0].id,
+          promptStr: promptStr,
+        }),
+      }).then(() => {
+        promptsArray;
+        setPromptStr("");
+        setSubjectText("");
+      });
+    } catch (error) {
+      console.error("Error posting prompt:", error);
+    }
+  };
+
+  // console.log(discussionText);
+  // console.log(subjectText);
 
   return (
     <div>
@@ -117,21 +143,24 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
               <div className='p-4'>
                 <div className='p-2 flex flex-col bg-zinc-800 w-auto h-14 rounded-2xl mb-2'>
                   <textarea
-                    className='bg-zinc-800 w-full h-8 rounded-2xl text-zinc-100 mb-2 resize-none border border-zinc-800 focus:outline-none focus:ring-0 focus:border-transparent'
+                    className='bg-zinc-800 w-auto h-8 text-zinc-100 mb-2 resize-none border border-zinc-800 focus:outline-none focus:ring-0 focus:border-transparent truncate overflow-y-hidden'
                     placeholder='Subject here...'
-                    value={subjectText}
+                    value={`${subjectText}`}
                     onChange={handleSubjectTextChange}
                   ></textarea>
                 </div>
 
                 <div className='relative p-4 flex flex-col bg-zinc-800 w-full h-72 rounded-2xl'>
                   <textarea
-                    className='bg-zinc-800 w-auto h-52 rounded-2xl text-zinc-100 mb-2 resize-none border border-zinc-800 focus:outline-none focus:ring-0 focus:border-transparent'
+                    className='bg-zinc-800 w-auto h-52 text-zinc-100 mb-2 resize-none border border-zinc-800 focus:outline-none focus:ring-0 focus:border-transparent'
                     placeholder='Start a discussion...'
-                    value={discussionText}
+                    value={promptStr}
                     onChange={handleDiscussionTextChange}
                   ></textarea>
-                  <button className='absolute bottom-4 right-4 w-24 p-2 bg-sky-600 rounded-full hover:bg-sky-800 text-zinc-200 font-semibold'>
+                  <button
+                    className='absolute bottom-4 right-4 w-24 p-2 bg-sky-600 rounded-full hover:bg-sky-800 text-zinc-200 font-semibold'
+                    onClick={handlePromptPost}
+                  >
                     Done
                   </button>
                 </div>

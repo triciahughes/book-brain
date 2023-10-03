@@ -3,13 +3,15 @@ import Image from "next/image";
 import RightArrow from "../public/right-arrow.png";
 import { useRouter } from "next/router";
 
-const DiscussionCard = ({ prompts, promptId }) => {
+const DiscussionCard = ({ prompts, promptId, subject }) => {
   const router = useRouter();
   console.log(prompts);
 
   const charLimit = 115;
+  const subCharLimit = 20;
 
   const promptStr = prompts.promptStr.slice(0, charLimit);
+  const subjectStr = subject.slice(0, subCharLimit);
 
   const handleDiscussionClick = () => {
     console.log("go to discussion page", promptId);
@@ -23,7 +25,7 @@ const DiscussionCard = ({ prompts, promptId }) => {
         onClick={handleDiscussionClick}
       >
         <div className='text-sm text-purple-400 font-semibold'>
-          Discussion Subject
+          Subject here ...
         </div>
         <div className='flex flex-row'>
           <div className='text-base'>{promptStr}...</div>
