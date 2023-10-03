@@ -13,7 +13,7 @@ model User {
     firstName    String
     lastName     String
     email        String
-    passwordHash String    // Notice it's just a regular field now.
+    passwordHash String 
     hostGroups   Group[]
     memberships  Member[]
     comments     Comment[]
@@ -54,7 +54,7 @@ model Prompt {
     id        Int      @id @default(autoincrement())
     bookId    Int
     book      Book     @relation(fields: [bookId], references: [id])
-    promptStr String   // Renamed because 'prompt' could be a reserved keyword.
+    promptStr String
     comments  Comment[]
 }
 
