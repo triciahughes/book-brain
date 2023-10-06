@@ -84,7 +84,7 @@ const GroupById: React.FC<GroupByIdProps> = ({
           Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
         },
         body: JSON.stringify({
-          prompt: `Create a discussion prompt about the book '${featuredBook[0]}' by ${featuredAuthor[0]}. Don't include the title or author in the prompt. \n\n`,
+          prompt: `Create a discussion prompt about the book '${featuredBook}' by ${featuredAuthor}. Don't include the title or author in the prompt. \n\n`,
         }),
       });
 

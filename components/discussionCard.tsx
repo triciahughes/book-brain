@@ -3,7 +3,22 @@ import Image from "next/image";
 import RightArrow from "../public/right-arrow.png";
 import { useRouter } from "next/router";
 
-const DiscussionCard = ({ prompts, promptId, subject }) => {
+type Prompt = {
+  id: Number;
+  promptStr: String;
+};
+
+type DiscussionCardProps = {
+  prompts: Prompt;
+  promptId: Number;
+  subject: String;
+};
+
+const DiscussionCard: React.FC<DiscussionCardProps> = ({
+  prompts,
+  promptId,
+  subject,
+}) => {
   const router = useRouter();
 
   const charLimit = 115;
