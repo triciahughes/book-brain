@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { fetchGroupById } from "@/app/lib/data-fetching/groupData";
 import FeaturedBookPanel from "@/components/featuredBookPanel";
 import DiscussionCard from "@/components/discussionCard";
+import { create } from "domain";
 
 export const getServerSideProps = fetchGroupById;
 
@@ -10,6 +11,7 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
   const [gptSubject, setGptSubject] = useState("");
   const [promptStr, setPromptStr] = useState("");
   const [subjectText, setSubjectText] = useState("");
+  const [createPromptView, setCreatePromptView] = useState(false);
 
   const membersArray = members.map((data: any) => (
     <div key={data.id} className='mb-2 hover:text-gray-600 hover:font-bold'>
@@ -54,6 +56,10 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
   const featuredAuthor = books.map((data: any) =>
     data.featured === true ? data.author : null
   );
+
+  const handleCreatePromptViewToggle = () => {
+    setCreatePromptView(!createPromptView);
+  };
 
   const fetchDiscussion = async () => {
     try {
@@ -113,11 +119,69 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
         promptsArray;
         setPromptStr("");
         setSubjectText("");
+        setCreatePromptView(false);
       });
     } catch (error) {
       console.error("Error posting prompt:", error);
     }
   };
+
+  const createPromptViewToggle = createPromptView ? (
+    <div className=''>
+      <div className='flex flex-row space-x-96 mb-4'>
+        <div className='flex-nowrap text-3xl font-bold text-white mr-8'>
+          Discussion
+        </div>
+        <button
+          className='text-zinc-200 font-semibold w-48 p-2 bg-purple-600 rounded-full hover:bg-purple-800'
+          onClick={fetchDiscussion}
+        >
+          Generate Prompt
+        </button>
+      </div>
+      <div className='bg-zinc-900 w-8/12 h-90 rounded-2xl mb-4'>
+        <div className='p-4'>
+          <div className='p-2 flex flex-col bg-zinc-800 w-auto h-14 rounded-2xl mb-2'>
+            <textarea
+              className='bg-zinc-800 w-auto h-8 text-zinc-100 mb-2 resize-none border border-zinc-800 focus:outline-none focus:ring-0 focus:border-transparent truncate overflow-y-hidden'
+              placeholder='Subject here...'
+              value={`${subjectText}`}
+              onChange={handleSubjectTextChange}
+            ></textarea>
+          </div>
+
+          <div className='relative p-4 flex flex-col bg-zinc-800 w-full h-72 rounded-2xl'>
+            <textarea
+              className='bg-zinc-800 w-auto h-52 text-zinc-100 mb-2 resize-none border border-zinc-800 focus:outline-none focus:ring-0 focus:border-transparent'
+              placeholder='Start a discussion...'
+              value={promptStr}
+              onChange={handleDiscussionTextChange}
+            ></textarea>
+            <button
+              className='absolute bottom-4 right-4 w-24 p-2 bg-sky-600 rounded-full hover:bg-sky-800 text-zinc-200 font-semibold'
+              onClick={handlePromptPost}
+            >
+              Done
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  ) : (
+    <div className=''>
+      <div className='flex flex-row space-x-96 mb-4'>
+        <div className='flex-nowrap text-3xl font-bold text-white mr-8'>
+          Discussion
+        </div>
+        <button
+          className='text-zinc-200 font-semibold w-48 p-2 bg-purple-600 rounded-full hover:bg-purple-800'
+          onClick={handleCreatePromptViewToggle}
+        >
+          Create Discussion
+        </button>
+      </div>
+    </div>
+  );
 
   // console.log(discussionText);
   // console.log(subjectText);
@@ -127,46 +191,7 @@ const GroupById = ({ group, members, books, prompts, comments }) => {
       <div className='flex flex-row'>
         <FeaturedBookPanel books={books} membersArray={membersArray} />
         <div className='flex flex-col w-full max-w-10/12'>
-          <div className=''>
-            <div className='flex flex-row space-x-96 mb-4'>
-              <div className='flex-nowrap text-3xl font-bold text-white mr-8'>
-                Discussion
-              </div>
-              <button
-                className='text-zinc-200 font-semibold w-48 p-2 bg-purple-600 rounded-full hover:bg-purple-800'
-                onClick={fetchDiscussion}
-              >
-                Generate Prompt
-              </button>
-            </div>
-            <div className='bg-zinc-900 w-8/12 h-90 rounded-2xl mb-4'>
-              <div className='p-4'>
-                <div className='p-2 flex flex-col bg-zinc-800 w-auto h-14 rounded-2xl mb-2'>
-                  <textarea
-                    className='bg-zinc-800 w-auto h-8 text-zinc-100 mb-2 resize-none border border-zinc-800 focus:outline-none focus:ring-0 focus:border-transparent truncate overflow-y-hidden'
-                    placeholder='Subject here...'
-                    value={`${subjectText}`}
-                    onChange={handleSubjectTextChange}
-                  ></textarea>
-                </div>
-
-                <div className='relative p-4 flex flex-col bg-zinc-800 w-full h-72 rounded-2xl'>
-                  <textarea
-                    className='bg-zinc-800 w-auto h-52 text-zinc-100 mb-2 resize-none border border-zinc-800 focus:outline-none focus:ring-0 focus:border-transparent'
-                    placeholder='Start a discussion...'
-                    value={promptStr}
-                    onChange={handleDiscussionTextChange}
-                  ></textarea>
-                  <button
-                    className='absolute bottom-4 right-4 w-24 p-2 bg-sky-600 rounded-full hover:bg-sky-800 text-zinc-200 font-semibold'
-                    onClick={handlePromptPost}
-                  >
-                    Done
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+          {createPromptViewToggle}
 
           <div className='flex flex-col mt-5 w-8/12'>
             {promptsArray}
