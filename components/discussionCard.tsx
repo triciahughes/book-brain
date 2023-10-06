@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 
 const DiscussionCard = ({ prompts, promptId, subject }) => {
   const router = useRouter();
-  console.log(prompts);
 
   const charLimit = 115;
   const subCharLimit = 20;
@@ -14,7 +13,6 @@ const DiscussionCard = ({ prompts, promptId, subject }) => {
   const subjectStr = subject.slice(0, subCharLimit);
 
   const handleDiscussionClick = () => {
-    console.log("go to discussion page", promptId);
     router.push(`/discussion/${promptId}`);
   };
 
