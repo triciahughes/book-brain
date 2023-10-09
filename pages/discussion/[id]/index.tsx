@@ -52,6 +52,12 @@ const DiscussionById: React.FC<DiscussionByIdProps> = ({
 
   const commentTextBoxToggle = () => {};
 
+  const countCommentStr = () => {
+    return commentStr.length > 550 ? `bg-sky-600/50` : `bg-sky-600`;
+  };
+
+  console.log(commentStr.length);
+
   const handleCommentTextChange = (
     e: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
@@ -108,7 +114,7 @@ const DiscussionById: React.FC<DiscussionByIdProps> = ({
                 handleDiscussionTextChange={handleCommentTextChange}
               />{" "}
               <button
-                className='absolute bottom-10 right-8 w-24 p-2 bg-sky-600 rounded-full hover:bg-sky-800 text-zinc-200 font-semibold'
+                className={`absolute bottom-10 right-8 w-24 p-2 ${countCommentStr()} rounded-full hover:bg-sky-800 text-zinc-200 font-semibold`}
                 onClick={() => console.log("post comment")}
               >
                 Done
