@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { fetchGroupById } from "@/app/lib/data-fetching/groupData";
 import FeaturedBookPanel from "@/components/featuredBookPanel";
 import DiscussionCard from "@/components/discussionCard";
+import Textbox from "@/components/textbox";
 
 export const getServerSideProps = fetchGroupById;
 
@@ -57,9 +58,7 @@ const GroupById: React.FC<GroupByIdProps> = ({
       : setPromptStr(e.target.value);
   };
 
-  const handleSubjectTextChange = (
-    e: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
+  const handleSubjectTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     return gptSubject
       ? setSubjectText(gptSubject)
       : setSubjectText(e.target.value);
@@ -154,22 +153,20 @@ const GroupById: React.FC<GroupByIdProps> = ({
       </div>
       <div className='bg-zinc-900 w-8/12 h-90 rounded-2xl mb-4'>
         <div className='p-4'>
-          <div className='p-2 flex flex-col bg-zinc-800 w-auto h-14 rounded-2xl mb-2'>
-            <textarea
-              className='bg-zinc-800 w-auto h-8 text-zinc-100 mb-2 resize-none border border-zinc-800 focus:outline-none focus:ring-0 focus:border-transparent truncate overflow-y-hidden'
+          <div className='p-4 flex flex-col bg-zinc-800 w-auto h-14 rounded-2xl mb-2'>
+            <input
+              className='bg-zinc-800 w-auto h-8 text-zinc-100  resize-none border border-zinc-800 focus:outline-none focus:ring-0 focus:border-transparent truncate overflow-y-hidden'
               placeholder='Subject here...'
               value={`${subjectText}`}
               onChange={handleSubjectTextChange}
-            ></textarea>
+            ></input>
           </div>
 
           <div className='relative p-4 flex flex-col bg-zinc-800 w-full h-72 rounded-2xl'>
-            <textarea
-              className='bg-zinc-800 w-auto h-52 text-zinc-100 mb-2 resize-none border border-zinc-800 focus:outline-none focus:ring-0 focus:border-transparent'
-              placeholder='Start a discussion...'
-              value={promptStr}
-              onChange={handleDiscussionTextChange}
-            ></textarea>
+            <Textbox
+              promptStr={promptStr}
+              handleDiscussionTextChange={handleDiscussionTextChange}
+            />
             <button
               className='absolute bottom-4 right-4 w-24 p-2 bg-sky-600 rounded-full hover:bg-sky-800 text-zinc-200 font-semibold'
               onClick={handlePromptPost}

@@ -1,16 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { fetchDiscussionById } from "@/app/lib/data-fetching/discussionData";
 import FeaturedBookPanel from "@/components/featuredBookPanel";
 import CommentCard from "@/components/commentCard";
 import Image from "next/image";
 import LeftArrow from "../../../public/left-arrow.png";
 import { useRouter } from "next/router";
+import TextBox from "@/components/textbox";
 
 export const getServerSideProps = fetchDiscussionById;
 
 const DiscussionById = ({ books, members, discussion, comments }) => {
   const router = useRouter();
-  console.log(books);
+  const [commentTextboxRender, setCommentTextboxRender] = useState(false);
+  const [commentStr, setCommentStr] = useState("");
   const membersArray = members.map((data: any) => (
     <div key={data.id} className='mb-2 hover:text-gray-600 hover:font-bold'>
       {data.firstName}
@@ -24,6 +26,18 @@ const DiscussionById = ({ books, members, discussion, comments }) => {
   const handleBackClick = () => {
     console.log("go back to groups / discussions page");
     router.push(`/groups/${books.groupId}`);
+  };
+
+  const handleCommentClick = () => {
+    setCommentTextboxRender(!commentTextboxRender);
+  };
+
+  const commentTextBoxToggle = () => {};
+
+  const handleCommentTextChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setCommentStr(e.target.value);
   };
 
   return (
@@ -58,6 +72,33 @@ const DiscussionById = ({ books, members, discussion, comments }) => {
               </div>
             </div>
           </div>
+          <div className='flex justify-end w-8/12'>
+            <button
+              className={`text-zinc-200 font-semibold ${
+                commentTextboxRender ? "w-24" : "w-48"
+              } p-2 bg-purple-600 rounded-full hover:bg-purple-800`}
+              onClick={handleCommentClick}
+            >
+              {commentTextboxRender ? "Cancel" : "Add Comment"}
+            </button>
+          </div>
+
+          {commentTextboxRender ? (
+            <div className='relative p-4 mt-4 flex flex-col bg-zinc-900 w-8/12 h-72 rounded-2xl'>
+              <TextBox
+                promptStr={commentStr}
+                handleDiscussionTextChange={handleCommentTextChange}
+              />{" "}
+              <button
+                className='absolute bottom-10 right-8 w-24 p-2 bg-sky-600 rounded-full hover:bg-sky-800 text-zinc-200 font-semibold'
+                onClick={() => console.log("post comment")}
+              >
+                Done
+              </button>
+            </div>
+          ) : (
+            <div></div>
+          )}
 
           <div className='flex flex-col mt-5 w-8/12'>{commentsArr}</div>
         </div>
