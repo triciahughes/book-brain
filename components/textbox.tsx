@@ -27,9 +27,10 @@ const TextBox: React.FC<TextBoxProps> = ({
     } else if (router.route === "/discussion/[id]") {
       return (
         <textarea
-          className='bg-zinc-800 w-6/8 h-64 text-zinc-100 my-2 resize-none border border-zinc-800 rounded-2xl focus:outline-none focus:ring-0 focus:border-transparent'
+          className='bg-zinc-800 w-6/8 h-full text-zinc-100 my-2 resize-none border border-zinc-800 rounded-2xl focus:outline-none focus:ring-0 focus:border-transparent'
           placeholder='Write a comment...'
-          value={"comment"}
+          value={promptStr}
+          onChange={handleDiscussionTextChange}
         ></textarea>
       );
     }

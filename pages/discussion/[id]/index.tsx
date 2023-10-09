@@ -12,6 +12,7 @@ export const getServerSideProps = fetchDiscussionById;
 const DiscussionById = ({ books, members, discussion, comments }) => {
   const router = useRouter();
   const [commentTextboxRender, setCommentTextboxRender] = useState(false);
+  const [commentStr, setCommentStr] = useState("");
   const membersArray = members.map((data: any) => (
     <div key={data.id} className='mb-2 hover:text-gray-600 hover:font-bold'>
       {data.firstName}
@@ -32,6 +33,12 @@ const DiscussionById = ({ books, members, discussion, comments }) => {
   };
 
   const commentTextBoxToggle = () => {};
+
+  const handleCommentTextChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setCommentStr(e.target.value);
+  };
 
   return (
     <div>
@@ -78,7 +85,16 @@ const DiscussionById = ({ books, members, discussion, comments }) => {
 
           {commentTextboxRender ? (
             <div className='relative p-4 mt-4 flex flex-col bg-zinc-900 w-8/12 h-72 rounded-2xl'>
-              <TextBox />{" "}
+              <TextBox
+                promptStr={commentStr}
+                handleDiscussionTextChange={handleCommentTextChange}
+              />{" "}
+              <button
+                className='absolute bottom-10 right-8 w-24 p-2 bg-sky-600 rounded-full hover:bg-sky-800 text-zinc-200 font-semibold'
+                onClick={() => console.log("post comment")}
+              >
+                Done
+              </button>
             </div>
           ) : (
             <div></div>
