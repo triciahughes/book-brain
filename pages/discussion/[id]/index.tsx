@@ -67,10 +67,12 @@ const DiscussionById = ({ books, members, discussion, comments }) => {
           </div>
           <div className='flex justify-end w-8/12'>
             <button
-              className='text-zinc-200 font-semibold w-48 p-2 bg-purple-600 rounded-full hover:bg-purple-800'
+              className={`text-zinc-200 font-semibold ${
+                commentTextboxRender ? "w-24" : "w-48"
+              } p-2 bg-purple-600 rounded-full hover:bg-purple-800`}
               onClick={handleCommentClick}
             >
-              Add comment
+              {commentTextboxRender ? "Cancel" : "Add Comment"}
             </button>
           </div>
 
