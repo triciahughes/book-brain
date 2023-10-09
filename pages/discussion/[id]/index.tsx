@@ -9,7 +9,25 @@ import TextBox from "@/components/textbox";
 
 export const getServerSideProps = fetchDiscussionById;
 
-const DiscussionById = ({ books, members, discussion, comments }) => {
+type DiscussionByIdProps = {
+  members: Array<Object>;
+  discussion: {
+    promptStr: string;
+  };
+  comments: Array<Object>;
+  books: {
+    id: number;
+    groupId: number;
+    title: string;
+  };
+};
+
+const DiscussionById: React.FC<DiscussionByIdProps> = ({
+  books,
+  members,
+  discussion,
+  comments,
+}) => {
   const router = useRouter();
   const [commentTextboxRender, setCommentTextboxRender] = useState(false);
   const [commentStr, setCommentStr] = useState("");

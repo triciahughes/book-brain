@@ -7,7 +7,7 @@ const Signin = () => {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     signIn("credentials", {
       email: email,
