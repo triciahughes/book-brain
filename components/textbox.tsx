@@ -1,6 +1,17 @@
 import React from "react";
 import { useRouter } from "next/router";
-const textbox = ({ promptStr, handleDiscussionTextChange }) => {
+
+type TextBoxProps = {
+  promptStr: string;
+  handleDiscussionTextChange: (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => void;
+};
+
+const textbox: React.FC<TextBoxProps> = ({
+  promptStr,
+  handleDiscussionTextChange,
+}) => {
   const router = useRouter();
 
   const dynamicTextBox = () => {
