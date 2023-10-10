@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 type CommentCardProps = {
   commentData: {
     comment: string;
+    userId: number;
   };
 };
 
@@ -33,14 +34,6 @@ const commentCard: React.FC<CommentCardProps> = ({ commentData }) => {
             Author {commentData.userId}
           </div>
           {renderEditDeleteBtns()}
-          {/* <div className='text-sm flex flex-row gap-x-6'>
-            <div className='text-purple-400 font-bold hover:text-purple-800 hover:cursor-pointer'>
-              Edit
-            </div>
-            <div className='text-red-400 font-bold hover:text-red-800 hover:cursor-pointer'>
-              Delete
-            </div>
-          </div> */}
         </div>
         <div className='text-base'> {commentData.comment}</div>
       </div>
