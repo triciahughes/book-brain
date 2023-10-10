@@ -1,25 +1,34 @@
 import React from "react";
 import { useSession } from "next-auth/react";
+import Modal from "@/components/modal";
 
 type CommentCardProps = {
   commentData: {
+    id: number;
     comment: string;
     userId: number;
   };
+  handleDeleteClick: () => void;
 };
 
-const commentCard: React.FC<CommentCardProps> = ({ commentData }) => {
+const commentCard: React.FC<CommentCardProps> = ({
+  commentData,
+  handleDeleteClick,
+}) => {
   const { data: session } = useSession();
 
   const renderEditDeleteBtns = () => {
     return session?.user.id === commentData.userId ? (
       <div className='text-sm flex flex-row gap-x-6'>
-        <div className='text-purple-400 font-bold hover:text-purple-800 hover:cursor-pointer'>
+        <button className='text-purple-400 font-bold hover:text-purple-800 hover:cursor-pointer'>
           Edit
-        </div>
-        <div className='text-red-400 font-bold hover:text-red-800 hover:cursor-pointer'>
+        </button>
+        <button
+          className='text-red-400 font-bold hover:text-red-800 hover:cursor-pointer'
+          onClick={handleDeleteClick}
+        >
           Delete
-        </div>
+        </button>
       </div>
     ) : (
       <div></div>

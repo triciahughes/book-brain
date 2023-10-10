@@ -7,6 +7,7 @@ import LeftArrow from "../../../public/left-arrow.png";
 import { useRouter } from "next/router";
 import TextBox from "@/components/textbox";
 import { useSession } from "next-auth/react";
+import Modal from "@/components/modal";
 
 export const getServerSideProps = fetchDiscussionById;
 
@@ -34,14 +35,29 @@ const DiscussionById: React.FC<DiscussionByIdProps> = ({
   const router = useRouter();
   const [commentTextboxRender, setCommentTextboxRender] = useState(false);
   const [commentStr, setCommentStr] = useState("");
+  const [deleteModalRender, setDeleteModalRender] = useState(false);
+
   const membersArray = members.map((data: any) => (
     <div key={data.id} className='mb-2 hover:text-gray-600 hover:font-bold'>
       {data.firstName}
     </div>
   ));
 
+  const handleDeleteClick = () => {
+    setDeleteModalRender(() => !deleteModalRender);
+  };
+
+  const deleteComConfirm = () => {
+    console.log("delete comment");
+    handleDeleteClick();
+  };
+
   const commentsArr = comments.map((data: any) => (
-    <CommentCard key={data.id} commentData={data} />
+    <CommentCard
+      key={data.id}
+      commentData={data}
+      handleDeleteClick={handleDeleteClick}
+    />
   ));
 
   const handleBackClick = () => {
@@ -92,7 +108,7 @@ const DiscussionById: React.FC<DiscussionByIdProps> = ({
 
   return (
     <div>
-      <div className='flex flex-row'>
+      <div className='flex flex-row static'>
         <FeaturedBookPanel books={books} membersArray={membersArray} />
         <div className='flex flex-col w-full max-w-10/12'>
           <div className=''>
@@ -150,7 +166,19 @@ const DiscussionById: React.FC<DiscussionByIdProps> = ({
             <div></div>
           )}
 
-          <div className='flex flex-col mt-5 w-8/12'>{commentsArr}</div>
+          <div>
+            <div className='flex flex-col mt-5 w-8/12'>{commentsArr}</div>
+            <div className='relative bottom-96 left-40'>
+              {deleteModalRender ? (
+                <Modal
+                  handleDeleteClick={handleDeleteClick}
+                  deleteComConfirm={deleteComConfirm}
+                />
+              ) : (
+                <div></div>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </div>
