@@ -6,6 +6,7 @@ import Image from "next/image";
 import LeftArrow from "../../../public/left-arrow.png";
 import { useRouter } from "next/router";
 import TextBox from "@/components/textbox";
+import { useSession } from "next-auth/react";
 
 export const getServerSideProps = fetchDiscussionById;
 
@@ -13,6 +14,7 @@ type DiscussionByIdProps = {
   members: Array<Object>;
   discussion: {
     promptStr: string;
+    id: number;
   };
   comments: Array<Object>;
   books: {
@@ -28,6 +30,7 @@ const DiscussionById: React.FC<DiscussionByIdProps> = ({
   discussion,
   comments,
 }) => {
+  const { data: session } = useSession();
   const router = useRouter();
   const [commentTextboxRender, setCommentTextboxRender] = useState(false);
   const [commentStr, setCommentStr] = useState("");
@@ -50,18 +53,41 @@ const DiscussionById: React.FC<DiscussionByIdProps> = ({
     setCommentTextboxRender(!commentTextboxRender);
   };
 
-  const commentTextBoxToggle = () => {};
-
   const countCommentStr = () => {
     return commentStr.length > 550 ? `bg-sky-600/50` : `bg-sky-600`;
   };
-
-  console.log(commentStr.length);
 
   const handleCommentTextChange = (
     e: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
     setCommentStr(e.target.value);
+  };
+
+  const handleCommentSubmit = async () => {
+    try {
+      const res = await fetch(`http://localhost:3000/api/addComment`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          comment: commentStr,
+          promptId: discussion.id,
+          userId: session?.user.id,
+        }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        console.log(data);
+        router.reload();
+        setCommentTextboxRender(false);
+      } else {
+        console.error("Failed to post comment.", await res.text());
+      }
+    } catch (error) {
+      console.log("Error during fetch:", error);
+    }
   };
 
   return (
@@ -115,7 +141,7 @@ const DiscussionById: React.FC<DiscussionByIdProps> = ({
               />{" "}
               <button
                 className={`absolute bottom-10 right-8 w-24 p-2 ${countCommentStr()} rounded-full hover:bg-sky-800 text-zinc-200 font-semibold`}
-                onClick={() => console.log("post comment")}
+                onClick={handleCommentSubmit}
               >
                 Done
               </button>
