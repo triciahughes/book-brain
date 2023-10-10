@@ -10,7 +10,6 @@ type CommentCardProps = {
 
 const commentCard: React.FC<CommentCardProps> = ({ commentData }) => {
   const { data: session } = useSession();
-  console.log(session);
 
   const renderEditDeleteBtns = () => {
     return session?.user.id === commentData.userId ? (
