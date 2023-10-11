@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react";
 import Modal from "@/components/modal";
 
 type CommentCardProps = {
+  id: number;
   commentData: {
     id: number;
     comment: string;
@@ -12,6 +13,7 @@ type CommentCardProps = {
 };
 
 const commentCard: React.FC<CommentCardProps> = ({
+  id,
   commentData,
   handleDeleteClick,
 }) => {
@@ -20,12 +22,16 @@ const commentCard: React.FC<CommentCardProps> = ({
   const renderEditDeleteBtns = () => {
     return session?.user.id === commentData.userId ? (
       <div className='text-sm flex flex-row gap-x-6'>
-        <button className='text-purple-400 font-bold hover:text-purple-800 hover:cursor-pointer'>
+        <button
+          className='text-purple-400 font-bold hover:text-purple-800 hover:cursor-pointer'
+          value={id}
+        >
           Edit
         </button>
         <button
           className='text-red-400 font-bold hover:text-red-800 hover:cursor-pointer'
-          onClick={handleDeleteClick}
+          onClick={(e) => handleDeleteClick(e)}
+          value={id}
         >
           Delete
         </button>

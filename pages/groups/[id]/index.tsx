@@ -83,7 +83,7 @@ const GroupById: React.FC<GroupByIdProps> = ({
           Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
         },
         body: JSON.stringify({
-          prompt: `Create a discussion prompt about the book '${featuredBook}' by ${featuredAuthor}. Don't include the title or author in the prompt. \n\n`,
+          prompt: `Create a discussion prompt about the book '${featuredBook}' by ${featuredAuthor}. The discussion prompt should incite thought provoking conversation. \n\n`,
         }),
       });
 
@@ -105,7 +105,7 @@ const GroupById: React.FC<GroupByIdProps> = ({
           Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
         },
         body: JSON.stringify({
-          prompt: `In 10 words or less, create a subject line for the following discussion prompt: '${discussion}'`,
+          prompt: `In 10 words or less, create a title in APA format for the following discussion prompt: '${discussion}'`,
         }),
       });
 

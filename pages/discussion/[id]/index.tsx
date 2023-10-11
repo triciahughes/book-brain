@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ButtonHTMLAttributes, useState } from "react";
 import { fetchDiscussionById } from "@/app/lib/data-fetching/discussionData";
 import FeaturedBookPanel from "@/components/featuredBookPanel";
 import CommentCard from "@/components/commentCard";
@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import TextBox from "@/components/textbox";
 import { useSession } from "next-auth/react";
 import Modal from "@/components/modal";
+import { ValueOf } from "next/dist/shared/lib/constants";
 
 export const getServerSideProps = fetchDiscussionById;
 
@@ -43,18 +44,20 @@ const DiscussionById: React.FC<DiscussionByIdProps> = ({
     </div>
   ));
 
-  const handleDeleteClick = () => {
+  const handleDeleteClick = (e) => {
     setDeleteModalRender(() => !deleteModalRender);
+    console.log(e.target.value);
   };
 
-  const deleteComConfirm = () => {
-    console.log("delete comment");
-    handleDeleteClick();
+  const deleteComConfirm = (id: Number) => {
+    console.log("delete comment", id);
+    setDeleteModalRender(() => !deleteModalRender);
   };
 
   const commentsArr = comments.map((data: any) => (
     <CommentCard
       key={data.id}
+      id={data.id}
       commentData={data}
       handleDeleteClick={handleDeleteClick}
     />
