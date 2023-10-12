@@ -7,6 +7,8 @@ import LeftArrow from "../../../public/left-arrow.png";
 import { useRouter } from "next/router";
 import TextBox from "@/components/textbox";
 import { useSession } from "next-auth/react";
+import Modal from "@/components/modal";
+import { FormEvent } from "react";
 
 export const getServerSideProps = fetchDiscussionById;
 
@@ -34,14 +36,60 @@ const DiscussionById: React.FC<DiscussionByIdProps> = ({
   const router = useRouter();
   const [commentTextboxRender, setCommentTextboxRender] = useState(false);
   const [commentStr, setCommentStr] = useState("");
+  const [deleteModalRender, setDeleteModalRender] = useState(false);
+  const [deleteComId, setDeleteComId] = useState(0);
+
   const membersArray = members.map((data: any) => (
     <div key={data.id} className='mb-2 hover:text-gray-600 hover:font-bold'>
       {data.firstName}
     </div>
   ));
 
+  const handleDeleteClick = (e: React.FormEvent<HTMLFormElement>) => {
+    setDeleteModalRender(() => !deleteModalRender);
+    setDeleteComId(parseInt(e.currentTarget.value));
+    // console.log("from handleDelete", e.currentTarget.value);
+    // deleteComConfirm(e.currentTarget.value);
+  };
+
+  const deleteComConfirm = () => {
+    console.log("delete comment confirm", deleteComId);
+    setDeleteModalRender(() => !deleteModalRender);
+    deleteComment();
+  };
+
+  const deleteComment = async () => {
+    try {
+      const res = await fetch(`http://localhost:3000/api/delComment`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: deleteComId,
+        }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        console.log(data);
+        setDeleteComId(0);
+        router.reload();
+      } else {
+        console.error("Failed to delete comment.", await res.text());
+      }
+    } catch (error) {
+      console.log("Error during fetch:", error);
+    }
+  };
+
   const commentsArr = comments.map((data: any) => (
-    <CommentCard key={data.id} commentData={data} />
+    <CommentCard
+      key={data.id}
+      id={data.id}
+      commentData={data}
+      handleDeleteClick={handleDeleteClick}
+    />
   ));
 
   const handleBackClick = () => {
@@ -92,7 +140,7 @@ const DiscussionById: React.FC<DiscussionByIdProps> = ({
 
   return (
     <div>
-      <div className='flex flex-row'>
+      <div className='flex flex-row static'>
         <FeaturedBookPanel books={books} membersArray={membersArray} />
         <div className='flex flex-col w-full max-w-10/12'>
           <div className=''>
@@ -150,7 +198,19 @@ const DiscussionById: React.FC<DiscussionByIdProps> = ({
             <div></div>
           )}
 
-          <div className='flex flex-col mt-5 w-8/12'>{commentsArr}</div>
+          <div>
+            <div className='flex flex-col mt-5 w-8/12'>{commentsArr}</div>
+            <div className='relative bottom-96 left-40'>
+              {deleteModalRender ? (
+                <Modal
+                  handleDeleteClick={handleDeleteClick}
+                  deleteComConfirm={deleteComConfirm}
+                />
+              ) : (
+                <div></div>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </div>
