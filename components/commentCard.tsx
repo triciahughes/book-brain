@@ -1,6 +1,5 @@
 import React from "react";
 import { useSession } from "next-auth/react";
-import Modal from "@/components/modal";
 
 type CommentCardProps = {
   id: number;
@@ -9,10 +8,10 @@ type CommentCardProps = {
     comment: string;
     userId: number;
   };
-  handleDeleteClick: () => void;
+  handleDeleteClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
-const commentCard: React.FC<CommentCardProps> = ({
+const CommentCard: React.FC<CommentCardProps> = ({
   id,
   commentData,
   handleDeleteClick,
@@ -30,7 +29,7 @@ const commentCard: React.FC<CommentCardProps> = ({
         </button>
         <button
           className='text-red-400 font-bold hover:text-red-800 hover:cursor-pointer'
-          onClick={(e) => handleDeleteClick(e)}
+          onClick={handleDeleteClick}
           value={id}
         >
           Delete
@@ -40,6 +39,7 @@ const commentCard: React.FC<CommentCardProps> = ({
       <div></div>
     );
   };
+
   return (
     <>
       <div className='flex flex-col border border-white-200 rounded-lg py-2 px-4 mb-4 hover:bg-zinc-900'>
@@ -55,4 +55,4 @@ const commentCard: React.FC<CommentCardProps> = ({
   );
 };
 
-export default commentCard;
+export default CommentCard;

@@ -1,4 +1,4 @@
-import React, { ButtonHTMLAttributes, useState } from "react";
+import React, { useState } from "react";
 import { fetchDiscussionById } from "@/app/lib/data-fetching/discussionData";
 import FeaturedBookPanel from "@/components/featuredBookPanel";
 import CommentCard from "@/components/commentCard";
@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import TextBox from "@/components/textbox";
 import { useSession } from "next-auth/react";
 import Modal from "@/components/modal";
-import { ValueOf } from "next/dist/shared/lib/constants";
+import { FormEvent } from "react";
 
 export const getServerSideProps = fetchDiscussionById;
 
@@ -37,6 +37,7 @@ const DiscussionById: React.FC<DiscussionByIdProps> = ({
   const [commentTextboxRender, setCommentTextboxRender] = useState(false);
   const [commentStr, setCommentStr] = useState("");
   const [deleteModalRender, setDeleteModalRender] = useState(false);
+  const [deleteComId, setDeleteComId] = useState(0);
 
   const membersArray = members.map((data: any) => (
     <div key={data.id} className='mb-2 hover:text-gray-600 hover:font-bold'>
@@ -44,14 +45,42 @@ const DiscussionById: React.FC<DiscussionByIdProps> = ({
     </div>
   ));
 
-  const handleDeleteClick = (e) => {
+  const handleDeleteClick = (e: React.FormEvent<HTMLFormElement>) => {
     setDeleteModalRender(() => !deleteModalRender);
-    console.log(e.target.value);
+    setDeleteComId(parseInt(e.currentTarget.value));
+    // console.log("from handleDelete", e.currentTarget.value);
+    // deleteComConfirm(e.currentTarget.value);
   };
 
-  const deleteComConfirm = (id: Number) => {
-    console.log("delete comment", id);
+  const deleteComConfirm = () => {
+    console.log("delete comment confirm", deleteComId);
     setDeleteModalRender(() => !deleteModalRender);
+    deleteComment();
+  };
+
+  const deleteComment = async () => {
+    try {
+      const res = await fetch(`http://localhost:3000/api/delComment`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: deleteComId,
+        }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        console.log(data);
+        setDeleteComId(0);
+        router.reload();
+      } else {
+        console.error("Failed to delete comment.", await res.text());
+      }
+    } catch (error) {
+      console.log("Error during fetch:", error);
+    }
   };
 
   const commentsArr = comments.map((data: any) => (
